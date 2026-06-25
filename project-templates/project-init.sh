@@ -149,14 +149,36 @@ Tu DOIS utiliser les sous-agents pour chaque tache. Ne jamais coder directement 
 4. **code-quality-reviewer** — review apres implementation
 5. **project-manager** — marque done, passe au module suivant
 
-### Regles des sous-agents :
-- Toujours planifier avant de coder
-- Toujours reviewer apres avoir code
-- Tous les sous-agents doivent lire et respecter les regles d'architecture dans ~/ai-system/rules/
-- Si .agent/ existe : lire ~/ai-system/rules/scribe-graphify.md et appliquer les reflexes
-- Consulte le SCRIBE avant chaque implementation (scribe-rag context + challenge)
-- Consulte Graphify avant de modifier du code (graphify query)
-- Si un bug prend > 2 tentatives : ecris une SCAR dans le SCRIBE
+### SCRIBE + Graphify (bundle .agent/ present dans ce projet)
+
+Initialisation obligatoire au debut de chaque session :
+\`\`\`bash
+.agent/workflow/scribe/scribe tenor-init --type extension
+\`\`\`
+
+Avant chaque implementation :
+\`\`\`bash
+.agent/workflow/scribe/scribe-rag context
+.agent/workflow/scribe/scribe-rag challenge "<ce que tu vas faire>"
+\`\`\`
+- STOP → ne pas implementer
+- REVIEW → lire les warnings et decider
+- PROCEED → go
+
+Avant de lire des fichiers pour comprendre le code :
+\`\`\`bash
+cat graphify-out/GRAPH_REPORT.md
+graphify query "<ta question>"
+\`\`\`
+
+Apres un bug resolu en > 2 tentatives → SCAR immediat.
+Fin de session → "Qu'est-ce qui fera souffrir le prochain LLM ?"
+
+Regles absolues agents :
+- Lire ~/ai-system/rules/scribe-graphify.md avant tout
+- Graphify avant grep/lecture fichiers
+- SCRIBE avant implementation
+- Jamais git add . (exclure .agent/ scribe-out/ graphify-out/)
 
 ### Comportement attendu :
 - Apres chaque tache : met a jour le plan, marque done, dis ce qui reste

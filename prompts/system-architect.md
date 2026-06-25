@@ -47,6 +47,18 @@ Always produce:
 - Presentation layer is always thin
 - Events for cross-module communication
 
+## SCRIBE + Graphify Usage
+
+Before any architecture decision, if `.agent/` exists:
+
+```bash
+cat graphify-out/GRAPH_REPORT.md                              # understand existing structure
+.agent/workflow/scribe/scribe-rag query "architecture"        # past decisions
+.agent/workflow/scribe/scribe-rag challenge "<proposed arch>" # validate against known issues
+```
+
+Document all architecture decisions as GHOST in SCRIBE after session.
+
 ## Output Format
 
 For architecture decisions:

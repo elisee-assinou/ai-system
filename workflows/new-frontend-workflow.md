@@ -2,6 +2,15 @@
 
 Utilise ce workflow quand tu démarres un nouveau projet frontend from scratch.
 
+## Phase 0 : Initialisation SCRIBE/Graphify
+
+Si `.agent/` existe dans le projet :
+
+```bash
+.agent/workflow/scribe/scribe tenor-init --type cli
+.agent/workflow/scribe/scribe-rag context
+```
+
 ## Phase 1 : Conception
 
 1. **Stack** : Next.js (App Router) + React + TypeScript strict + Tailwind CSS
@@ -36,6 +45,11 @@ Utilise ce workflow quand tu démarres un nouveau projet frontend from scratch.
 
 ## Phase 2 : Implémentation
 
+Avant chaque module :
+```bash
+.agent/workflow/scribe/scribe-rag challenge "<module + composants prévus>"
+```
+
 1. Commence par le **Domain** : types, interfaces, events
 2. Passe à l'**Application** : services, ports
 3. Fais l'**Infrastructure** : API calls, adapters
@@ -47,6 +61,19 @@ Utilise ce workflow quand tu démarres un nouveau projet frontend from scratch.
 - Pas de business logic dans les composants
 - Composants < 150 lignes
 - Tests pour chaque service applicatif
+
+Si `.agent/` présent :
+```bash
+graphify update .
+cat graphify-out/GRAPH_REPORT.md
+```
+
+## Phase 4 : Mémoire
+
+```bash
+.agent/workflow/scribe/scribe-rag autodream --read-only
+```
+Documenter dans SCRIBE : décisions design system (GHOST), patterns composants (PAT).
 
 ## Règles absolues
 

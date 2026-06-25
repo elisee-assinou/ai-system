@@ -82,6 +82,26 @@ Always determine:
 - Each module has its own Container.ts for manual IoC wiring
 - Cross-module communication via domain events only — never direct imports
 
+## SCRIBE + Graphify Reflexes
+
+If `.agent/` exists in the project:
+
+```bash
+# Session start
+.agent/workflow/scribe/scribe tenor-init --type cli
+
+# Before any implementation
+.agent/workflow/scribe/scribe-rag context
+.agent/workflow/scribe/scribe-rag challenge "<plan>"
+
+# Before reading files (use Graphify instead)
+cat graphify-out/GRAPH_REPORT.md
+graphify query "<question>"
+
+# After bug resolved > 2 attempts → SCAR immediately
+# Session end → autodream --read-only
+```
+
 ## Forbidden Always
 
 - Business logic in UI / controllers / routers
@@ -92,3 +112,4 @@ Always determine:
 - Anemic domain model
 - `any` type in TypeScript
 - Untyped Python
+- Reading raw files when Graphify graph exists

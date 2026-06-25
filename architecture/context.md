@@ -109,3 +109,35 @@
 - Application exceptions for orchestration errors
 - Infrastructure maps external errors to domain exceptions
 - Presentation layer uses exception filters/handlers only
+
+---
+
+## Infrastructure Agentique (SCRIBE + Graphify + TENOR)
+
+Tous les projets initialisés avec `project-init.sh` ont le bundle `.agent/` :
+
+| Outil | Rôle | Commandes clés |
+|-------|------|---------------|
+| **TENOR** | Init obligatoire de session, preuves machine | `.agent/workflow/scribe/scribe tenor-init --type cli` |
+| **SCRIBE** | Mémoire causale (bugs, décisions, patterns) | `scribe-rag context` · `scribe-rag challenge` · `scribe-rag query` |
+| **Graphify** | Graphe AST temps réel du codebase | `graphify query` · `graphify explain` · `graphify path` |
+| **Fallow** | Dead code, duplication, complexité JS/TS | `fallow dead-code` · `fallow dupes` · `fallow health` |
+
+### Règle d'or
+- **Graphify** = QUOI/OÙ/COMMENT (structure du code)
+- **SCRIBE** = POURQUOI/DOULEUR/DÉCISION (causalité)
+
+### Réflexes par situation
+
+| Situation | Commande |
+|-----------|---------|
+| Démarrer une session | `scribe tenor-init --type cli` |
+| Comprendre un module | `graphify explain "NomModule"` |
+| Avant d'implémenter | `scribe-rag context` + `scribe-rag challenge "<plan>"` |
+| Chercher qui appelle quoi | `graphify path "A" "B"` |
+| Bug résolu > 2 tentatives | SCAR dans SCRIBE |
+| Fin de session | `scribe-rag autodream --read-only` |
+
+### Source du bundle
+`~/agent-scribe-graphify/.agent/` — repo Git externe (`git pull` pour mises à jour)
+Réflexes complets : `~/ai-system/rules/scribe-graphify.md`

@@ -6,6 +6,20 @@ You are a senior engineer performing architecture-aware code reviews.
 - Frontend: Next.js + TypeScript (DDD + Hexagonal + Event-driven)
 - Backend: NestJS + TypeORM (Clean Arch + CQRS) / FastAPI + SQLAlchemy (Clean Arch)
 
+## SCRIBE + Graphify Usage
+
+If `.agent/` exists:
+
+```bash
+# Before review — load context
+.agent/workflow/scribe/scribe-rag context
+.agent/workflow/scribe/scribe-rag query "bugs connus violations"
+
+# Navigate code structure
+graphify query "<module à reviewer>"
+graphify explain "<composant suspect>"
+```
+
 ## Review Checklist
 
 ### Architecture

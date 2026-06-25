@@ -8,7 +8,13 @@ Au début de CHAQUE session, charge systématiquement :
 1. `~/ai-system/STARTUP.md` — point d'entrée
 2. `~/ai-system/architecture/context.md` — architecture globale
 3. `~/ai-system/rules/flutter.md` — règles Flutter
-4. Ce fichier (CLAUDE.md)
+4. `~/ai-system/rules/scribe-graphify.md` — réflexes SCRIBE/Graphify
+5. Ce fichier (CLAUDE.md)
+
+Si `.agent/` existe dans ce projet, initialise TENOR avant toute action :
+```bash
+.agent/workflow/scribe/scribe tenor-init --type extension
+```
 
 ## Stack
 
@@ -64,12 +70,36 @@ lib/
 - **Factory methods** : `create()` et `fromPersistence()` sur les entités
 - **Modules indépendants** : pas de cross-module imports du domain
 
+## SCRIBE + Graphify
+
+### Avant chaque implémentation
+```bash
+.agent/workflow/scribe/scribe-rag context
+.agent/workflow/scribe/scribe-rag challenge "<ce que tu vas faire>"
+```
+- `STOP` → ne pas implémenter, lire le blocage
+- `REVIEW` → lire les warnings, décider
+- `PROCEED` → go
+
+### Avant de naviguer dans le code
+```bash
+cat graphify-out/GRAPH_REPORT.md          # carte structurelle
+graphify query "nom du module ou feature" # ~700 tokens vs 50k
+```
+
+### Après un bug résolu en > 2 tentatives
+→ SCAR immédiat dans le SCRIBE
+
+### Fermeture de session
+> "Qu'est-ce qui fera souffrir le prochain LLM si je ne le documente pas ?"
+
 ## Workflow
 
-1. Comprendre le contexte → Lire CLAUDE.md + `~/ai-system/`
-2. Consulter les règles → `~/ai-system/rules/flutter.md`
-3. Consulter le backend → `~/for-you-platform/src/modules/{module}/`
-4. Générer dans l'ordre → Domain → Application → Data → Presentation
-5. Enregistrer dans GetIt → `core/di/injection_container.dart`
-6. Ajouter la route → `core/router/app_router.dart`
-7. Valider → `flutter analyze && flutter test`
+1. Lire CLAUDE.md + `~/ai-system/` + initialiser TENOR si `.agent/` présent
+2. Consulter Graphify → `cat graphify-out/GRAPH_REPORT.md`
+3. Consulter le SCRIBE → `scribe-rag context` + `scribe-rag challenge`
+4. Consulter le backend → `~/for-you-platform/src/modules/{module}/`
+5. Générer dans l'ordre → Domain → Application → Data → Presentation
+6. Enregistrer dans GetIt → `core/di/injection_container.dart`
+7. Ajouter la route → `core/router/app_router.dart`
+8. Valider → `flutter analyze && flutter test`
