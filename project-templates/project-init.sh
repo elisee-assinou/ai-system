@@ -2,12 +2,13 @@
 # Usage: source project-init.sh <stack> [project-dir] [project-name]
 # Stacks: express, nestjs, fastapi, django, fullstack, nextjs, flutter
 #
-# Ce script fait TOUT en une commande :
+# PRE-REQUIS : le projet doit deja exister (git init + npm init / poetry init / flutter create...)
+# Ce script ajoute uniquement la couche agentique sur un projet existant :
 # 1. Copie le bundle .agent/ (SCRIBE + Graphify + TENOR)
 # 2. Ajoute .agent/ scribe-out/ graphify-out/ ai-docs/ au .gitignore
 # 3. Lance le bootstrap SCRIBE
-# 4. Configure opencode.json
-# 5. Genere le CLAUDE.md avec les bonnes regles d'archi selon le stack
+# 4. Configure opencode.json (pour opencode)
+# 5. Genere le CLAUDE.md avec les regles d'archi selon le stack
 
 set -e
 
