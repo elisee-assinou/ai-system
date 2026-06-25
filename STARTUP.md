@@ -43,8 +43,14 @@ Charge ce fichier EN PREMIER au début de chaque session.
 | **animation-designer** | `~/ai-system/skills/animation-designer` | Animations Framer Motion + CSS |
 | **core-3d-animation** | `~/ai-system/skills/core-3d-animation` | Three.js, R3F, BabylonJS, GSAP, Framer Motion |
 | **css-animation** | `~/ai-system/skills/css-animation` | Walkthroughs HTML/CSS pour démos et onboarding |
+| **cache-audit** | `~/ai-system/skills/cache-audit` | Audit setup Claude Code vs bonnes pratiques de caching |
 
-Tous les skills sont disponibles globalement via symlinks dans `~/.claude/skills/`.
+Skills gérés en externe (non trackés dans ai-system) :
+- `build-mcp-server`, `frontend-design`, `skill-creator` → plugins marketplace Claude Code
+- `ui-ux-promax` → repo Git externe (`git pull` dans `~/.claude/skills/ui-ux-promax/`)
+- `figma-use` → plugin Cursor (symlink vers cache Cursor)
+
+Tous disponibles globalement via symlinks dans `~/.claude/skills/`.
 
 ## Claude Code agents
 
