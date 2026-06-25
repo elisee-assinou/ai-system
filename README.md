@@ -564,7 +564,9 @@ Cela évite d'accidentellement committer les fichiers SCRIBE/Graphify avec le co
 
 ## SCRIBE + Graphify
 
-Le bundle `.agent/` est copié dans chaque projet par `project-init.sh`.
+Le bundle `.agent/` est copié dans chaque projet par `project-init.sh`. Il contient deux CLIs :
+- **`scribe`** — CLI maintenance (bootstrap, doctor, lock, whoami, dashboard...)
+- **`scribe-rag`** — CLI agent (context, challenge, preflight, query, build, gate...)
 
 | Outil | Rôle |
 |-------|------|
@@ -573,76 +575,215 @@ Le bundle `.agent/` est copié dans chaque projet par `project-init.sh`.
 | **Graphify** | Carte AST temps réel — ~700 tokens au lieu de ~50 000 pour comprendre le code |
 | **Fallow** | Dead code, duplication, complexité JS/TS |
 
-### Démarrer une session
+---
+
+### Étape 1 — Démarrer une session (TENOR init)
 
 ```bash
+# Type selon ton outil : extension | cli | api | unknown
 .agent/workflow/scribe/scribe tenor-init --type extension
-# Produit un bloc SCRIBE-CHECK TENOR V4 prouvant que tout a été lu
+
+# Produit un bloc SCRIBE-CHECK TENOR V4 :
+# ✅ Workflow ACK, identité agent, mémoire chargée, lock status, claims actifs
 ```
 
-### Avant d'implémenter
+Si `tenor-init` échoue → afficher l'erreur réelle, ne pas continuer.
+
+---
+
+### Étape 2 — Choisir le mode de friction
+
+Le **mode** détermine combien de vérifications faire avant de coder.
+
+| Mode | Quand | Commande |
+|------|-------|---------|
+| **NANO** | Correction < 30 min, 1 fichier, pas de surface partagée | `scribe-rag context` seulement |
+| **QUICK** | Feature simple, 1-2h, surface connue | `scribe-rag preflight --tier QUICK "<plan>"` |
+| **STANDARD** | Feature normale, multi-fichiers, refactoring | `scribe-rag preflight --tier STANDARD "<plan>"` |
+| **CRITICAL** | Auth, data, API publique, migrations, multi-agent | `scribe-rag preflight --tier CRITICAL --strict "<plan>"` |
 
 ```bash
-# 1. Charger la mémoire du projet
+# Exemples
+.agent/workflow/scribe/scribe-rag context                              # NANO
+.agent/workflow/scribe/scribe-rag preflight --tier STANDARD "ajouter module Payment"
+.agent/workflow/scribe/scribe-rag preflight --tier CRITICAL --strict "migrer la table users"
+```
+
+---
+
+### Étape 3 — Charger la mémoire et valider le plan
+
+```bash
+# Charger le contexte mémoire (toujours)
 .agent/workflow/scribe/scribe-rag context
-# → Liste les bugs connus, décisions passées, patterns à suivre
+# → hot entries (SCARs, VACs, GHOSTs chauds), dettes actives, dernier JOURNAL
 
-# 2. Valider le plan
-.agent/workflow/scribe/scribe-rag challenge "je vais ajouter un système de notification push"
-# → PROCEED : go
-# → REVIEW : lire les warnings (ex: "ce pattern a causé un bug la fois d'avant")
-# → STOP : ne pas le faire (ex: "cette approche est dans la liste ne_pas_reproposer")
+# Valider le plan contre la mémoire
+.agent/workflow/scribe/scribe-rag challenge "je vais implémenter X"
+# → PROCEED : aucun risque connu → go
+# → REVIEW   : warnings à lire → décider avec l'utilisateur
+# → STOP     : approche dans ne_pas_reproposer ou SCAR bloquant → ne pas faire
+
+# Rebuild l'index si la mémoire est ancienne
+.agent/workflow/scribe/scribe-rag build
+.agent/workflow/scribe/scribe-rag build --with-embeddings  # mode hybride (plus précis, plus lent)
 ```
 
-### Naviguer dans le code sans lire les fichiers
+---
+
+### Étape 4 — Naviguer dans le code avec Graphify
 
 ```bash
-# Vue d'ensemble de l'architecture (500 tokens)
+# Vue d'ensemble de l'architecture (~500 tokens)
 cat graphify-out/GRAPH_REPORT.md
+# → God-nodes, blast radius, communautés, connexions surprenantes
 
-# Chercher un module
-graphify query "payment processing"
+# Chercher par concept
+graphify query "payment processing"        # BFS — contexte large
+graphify query "auth token" --dfs          # DFS — suivre un chemin précis
 
-# Trouver le chemin entre deux composants
+# Chemin entre deux composants
 graphify path "PaymentController" "WalletRepository"
 
-# Comprendre un nœud
+# Comprendre un nœud spécifique
 graphify explain "AuthBloc"
 
 # Mettre à jour le graphe après modifications
 graphify update .
 
-# Watcher en temps réel (reconstruction < 3s après chaque save)
+# Watcher temps réel (rebuild < 3s après chaque save)
 graphify watch .
 ```
 
-### Après un bug résolu en + de 2 tentatives
+**Règle d'or :** si `graphify-out/GRAPH_REPORT.md` existe → le lire **avant** de lire des fichiers sources.
 
-L'agent écrit automatiquement un **SCAR** (cicatrice) :
+---
+
+### Étape 5 — Implémenter
+
+Pendant l'implémentation, les agents suivent les règles de `~/ai-system/rules/<stack>.md`.
+
+Si plan change en cours de route :
+```bash
+.agent/workflow/scribe/scribe-rag challenge "<plan révisé>"
+# Relancer le challenge à chaque changement significatif
+```
+
+---
+
+### Étape 6 — Après un bug résolu (> 2 tentatives)
+
+Écrire un **SCAR** immédiat :
+
+```bash
+# L'agent l'écrit automatiquement, mais tu peux le déclencher manuellement
+```
+
 ```yaml
 type: SCAR
-cause_racine: "Le mapper n'initialisait pas le champ currency — Money.fromPersistence échouait silencieusement"
+id: SCAR-XXX
+cause_racine: "Le mapper n'initialisait pas le champ currency"
 resolution: "Ajouter currency dans MoneyMapper.toPersistence() avec valeur par défaut 'XOF'"
 test_binding: "test: MoneyMapper.toPersistence doit inclure currency"
 ```
 
-La prochaine fois qu'un agent travaille sur un problème similaire, `scribe-rag challenge` le rappelle et empêche la même erreur.
+La prochaine fois, `scribe-rag challenge` le rappelle automatiquement.
 
-### Fermeture de session
+---
+
+### Étape 7 — Fermeture de session
 
 ```bash
+# Suggestions automatiques de ce qui mérite d'être documenté
 .agent/workflow/scribe/scribe-rag autodream --read-only
 ```
+
 > "Qu'est-ce qui fera souffrir le prochain LLM si je ne le documente pas ?"
 
-Si la réponse est une vraie douleur → SCAR ou GHOST. Sinon → JOURNAL suffit.
+| Ce qui s'est passé | Ce qu'on écrit |
+|--------------------|----------------|
+| Bug résolu en > 2 tentatives | **SCAR** (cicatrice) |
+| Décision architecturale prise | **GHOST** (fantôme — alternative rejetée + raison) |
+| Règle préventive identifiée | **VAC** (vaccin) |
+| Pattern réutilisable découvert | **PAT** (pattern) |
+| Session normale sans problème | **JOURNAL** seulement |
+
+---
+
+### Les 5 types d'entrées SCRIBE
+
+| Type | ID | Quand écrire | Contenu |
+|------|-----|-------------|---------|
+| **SCAR** | `SCAR-XXX` | Bug résolu > 2 tentatives, régression, rollback | `cause_racine` + `resolution` + `test_binding` |
+| **GHOST** | `GHOST-XXX` | Décision archi — pourquoi on n'a PAS fait X | Alternative rejetée + raison |
+| **VAC** | `VAC-XXX` | Règle préventive causale (née d'un SCAR) | Règle + scope + evidence |
+| **PAT** | `PAT-XXX` | Pattern validé et réutilisable | Solution + contexte d'application |
+| **JOURNAL** | `JOURNAL-XXX` | Chaque session de travail | Ce qui a été fait, décisions mineures |
+
+**Ne jamais écrire** SCAR/GHOST/PAT/VAC pour gonfler les statistiques — seulement si ça évite une vraie souffrance au prochain LLM.
+
+---
+
+### Commandes de diagnostic
+
+```bash
+# Santé du bundle SCRIBE
+.agent/workflow/scribe/scribe doctor --suggest-fix
+
+# Dashboard HTML (statistiques, hot entries, timeline)
+.agent/workflow/scribe/scribe dashboard
+.agent/workflow/scribe/scribe dashboard --serve --host 127.0.0.1 --port 8765
+
+# Qualité de l'index RAG (doit être 8/8)
+.agent/workflow/scribe/scribe-rag gate
+
+# Identité de l'agent courant
+.agent/workflow/scribe/scribe whoami --type cli --surface idle
+
+# Requête libre sur la mémoire
+.agent/workflow/scribe/scribe-rag query "authentification bug"
+.agent/workflow/scribe/scribe-rag explain "SCAR-001"
+```
+
+---
+
+### Mode multi-agents (plusieurs Claude simultanés)
+
+Quand plusieurs agents travaillent sur le même projet en parallèle, SCRIBE gère les conflits d'écriture.
+
+```bash
+# Chaque agent s'identifie
+.agent/workflow/scribe/scribe whoami --type cli --surface auth
+
+# Vérifier qui travaille sur quoi
+.agent/workflow/scribe/scribe coordination status
+
+# Réclamer une zone avant d'implémenter
+.agent/workflow/scribe/scribe coordination claim \
+  --agent "<ID>" --claim "auth:login" \
+  --task "refacto login" --expected-file "src/auth/login.ts"
+
+# Acquérir le lock avant d'écrire dans SCRIBE
+.agent/workflow/scribe/scribe lock acquire --agent "<ID>" --type cli --session <JOURNAL-ID>
+
+# Libérer après écriture
+.agent/workflow/scribe/scribe lock release --agent "<ID>"
+```
+
+**Mécanismes de protection :**
+- `lock acquire` — atomique, refuse si un autre agent écrit
+- `coordination claim` — réserve sémantiquement une zone de code
+- `sync` — vérifie que l'état SCRIBE est à jour avant d'écrire
+- `worktree` — classe les fichiers modifiés (source vs généré vs agentique)
+
+---
 
 ### Mettre à jour le bundle
 
 ```bash
 cd ~/agent-scribe-graphify && git pull
 
-# Re-copier dans un projet si besoin
+# Re-copier dans un projet existant si besoin
 cp -r ~/agent-scribe-graphify/.agent ~/mon-projet/.agent
 ```
 
