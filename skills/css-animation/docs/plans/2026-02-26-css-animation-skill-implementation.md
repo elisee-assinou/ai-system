@@ -598,3 +598,6 @@ Start a new Claude Code conversation and say "css animation for [some app]". The
 - Follows the phase workflow
 
 If anything is off, fix and re-test.
+
+---
+*Elisee ASSINOU*

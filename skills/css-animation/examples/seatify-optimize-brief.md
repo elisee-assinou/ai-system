@@ -134,3 +134,6 @@ Score badge appears:
 - Total loop: ~8.5s
 - Easing: cubic-bezier(0.34, 1.56, 0.64, 1) for guest movement spring
 - Easing: ease-out for overlay and badge
+
+---
+*Elisee ASSINOU*

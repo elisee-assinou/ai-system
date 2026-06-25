@@ -81,3 +81,6 @@ graphify-out/
 ```
 
 Toujours `git add <fichiers-spécifiques>`, jamais `git add .`.
+
+---
+*Elisee ASSINOU*

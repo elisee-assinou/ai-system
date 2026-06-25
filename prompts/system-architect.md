@@ -73,3 +73,5 @@ For feature design:
 - Files to create (with layer)
 - Domain entity behavior
 - Commands/Queries needed
+---
+*Elisee ASSINOU*

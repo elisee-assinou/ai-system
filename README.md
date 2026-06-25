@@ -257,3 +257,6 @@ source ~/ai-system/project-templates/project-init.sh express .
 | `yo-business` | Next.js 15 | Admin panel Yo |
 | `hbpay-workspace` | Microservices | HBPay fintech |
 | `flash-wallet-sdk` | SDK | Bitcoin Lightning → XOF Mobile Money |
+
+---
+*Elisee ASSINOU*

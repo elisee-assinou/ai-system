@@ -84,3 +84,6 @@ Tous disponibles globalement via symlinks dans `~/.claude/skills/`.
 6. Prompt système pertinent dans `~/ai-system/prompts/`
 7. Skill pertinent dans `~/ai-system/skills/`
 8. `CLAUDE.md` du projet (racine du projet)
+
+---
+*Elisee ASSINOU*

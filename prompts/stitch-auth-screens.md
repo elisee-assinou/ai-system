@@ -70,3 +70,6 @@
 > Champs de formulaire : fond #f1f3ff, bordure #c4c6d4, rounded-full, padding 16px.
 >
 > Export en Tailwind HTML, même format que les autres screens FORYOU.
+
+---
+*Elisee ASSINOU*

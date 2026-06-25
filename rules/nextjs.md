@@ -244,3 +244,6 @@ import { Inter } from "next/font/google";
 | Fichiers non-compo.  | kebab-case         | `use-scroll-reveal.ts`         |
 | CSS classes custom   | kebab-case         | `.section-header`              |
 | IDs HTML             | kebab-case         | `id="cta-banner"`              |
+
+---
+*Elisee ASSINOU*

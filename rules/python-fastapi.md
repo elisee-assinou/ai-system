@@ -285,3 +285,5 @@ Before generating code:
 - Always generate SQLAlchemy ORM model separately
 - Always generate mapper between ORM and domain
 - Always generate Pydantic schema separately from domain entity
+---
+*Elisee ASSINOU*

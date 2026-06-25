@@ -116,3 +116,6 @@ cp ~/ai-system/project-templates/express-mongodb.json mon-projet/.opencode/openc
 ├── workflows/                   ← Workflows
 └── skills/                      ← Skills
 ```
+
+---
+*Elisee ASSINOU*

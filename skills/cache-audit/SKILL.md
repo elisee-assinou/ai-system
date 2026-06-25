@@ -187,3 +187,6 @@ If everything passes: say so clearly and note the estimated cost savings from th
 | 4. Models | One model per conversation, subagents for switches | Inline model switching |
 | 5. Size | Trim dynamic injections to minimum needed | Dump full git status (40k chars) |
 | 6. Forks | Same prefix for compaction/subagents | Different system prompt for summary calls |
+
+---
+*Elisee ASSINOU*

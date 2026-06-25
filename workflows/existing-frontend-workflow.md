@@ -90,3 +90,6 @@ Avant de planifier :
 - [ ] Tests pour les services applicatifs
 - [ ] SCRIBE à jour (SCARs, GHOSTs si applicable)
 - [ ] Graphify rebuild après changements majeurs
+
+---
+*Elisee ASSINOU*

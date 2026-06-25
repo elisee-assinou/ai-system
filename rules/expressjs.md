@@ -847,3 +847,6 @@ Before generating code:
 10. Always publish domain events after persistence, never before
 11. Wire dependencies in routes (composition root pattern)
 12. Use shared kernel value objects instead of cross-module domain imports
+
+---
+*Elisee ASSINOU*

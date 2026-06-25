@@ -66,3 +66,6 @@ theme: {
 - **Un seul fichier source** pour les tokens (globals.css) — ne pas dupliquer les valeurs dans les composants
 - **Extraire les tokens du Figma en premier** avant de coder un composant
 - **Nommer sémantiquement** : `--color-primary` et non `--color-blue`
+
+---
+*Elisee ASSINOU*

@@ -120,3 +120,5 @@ Generate:
 - reusable React components
 - responsive layouts
 - production-ready frontend code
+---
+*Elisee ASSINOU*

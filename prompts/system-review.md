@@ -66,3 +66,5 @@ Severity levels:
 - 🔴 Critical — architecture violation, must fix
 - 🟡 Warning — code quality issue, should fix
 - 🟢 Suggestion — improvement, nice to have
+---
+*Elisee ASSINOU*

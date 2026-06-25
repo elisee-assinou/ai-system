@@ -127,3 +127,6 @@ output_file: <filename>.html
 **Outputs**:
 1. `<brief>.md` — structured brief (user chooses save location)
 2. `<animation>.html` — self-contained animation file (user chooses save location)
+
+---
+*Elisee ASSINOU*

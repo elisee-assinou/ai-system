@@ -590,3 +590,6 @@ Positioning and layout bugs are much easier to see in frozen frames. Timing and 
 - **Hold the payoff — but not too long.** After the transformation, hold the final state for 2-3 seconds. Longer than that and the loop feels sluggish. The viewer absorbs the result faster than you think.
 - **Labels and badges appear last.** They narrate the result — let the visual change happen first.
 - **Design language is king.** Getting the colors, fonts, and border-radius right makes a rough layout still feel "like the app." Getting the layout perfect with wrong colors feels off.
+
+---
+*Elisee ASSINOU*

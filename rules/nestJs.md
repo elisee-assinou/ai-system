@@ -306,3 +306,5 @@ Before generating code:
 - Always generate repository interface in domain
 - Always generate mapper between ORM and domain
 - Always generate DTO separate from domain entity
+---
+*Elisee ASSINOU*

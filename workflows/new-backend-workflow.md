@@ -85,3 +85,6 @@ Documenter dans SCRIBE : décisions architecturales (GHOST), patterns réutilisa
 - Use cases retournent `Result<T>` (pas de throw)
 - Événements publiés après persistance, jamais avant
 - 1 commande = 1 handler, 1 query = 1 handler
+
+---
+*Elisee ASSINOU*

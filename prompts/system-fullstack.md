@@ -113,3 +113,5 @@ graphify query "<question>"
 - `any` type in TypeScript
 - Untyped Python
 - Reading raw files when Graphify graph exists
+---
+*Elisee ASSINOU*

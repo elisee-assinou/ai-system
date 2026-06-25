@@ -287,3 +287,5 @@ Before generating code:
 - determine the module
 - determine the layer
 - determine responsibilities
+---
+*Elisee ASSINOU*

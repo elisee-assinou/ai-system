@@ -602,3 +602,5 @@ Before generating code:
 - Always use Result[T] return type on use cases
 - Always publish domain events after persistence — never before
 - Always use int (cents) for monetary values — never float
+---
+*Elisee ASSINOU*

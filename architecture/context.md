@@ -141,3 +141,5 @@ Tous les projets initialisés avec `project-init.sh` ont le bundle `.agent/` :
 ### Source du bundle
 `~/agent-scribe-graphify/.agent/` — repo Git externe (`git pull` pour mises à jour)
 Réflexes complets : `~/ai-system/rules/scribe-graphify.md`
+---
+*Elisee ASSINOU*

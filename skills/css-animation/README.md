@@ -56,3 +56,6 @@ Then trigger it in Claude Code with phrases like: "css animation", "animate this
 ## Examples
 
 See the `examples/` directory for sample animations and their briefs.
+
+---
+*Elisee ASSINOU*

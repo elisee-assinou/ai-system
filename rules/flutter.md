@@ -944,3 +944,6 @@ Avant de générer du code :
 14. Enregistrer dans GetIt
 
 Toujours suivre l'ordre Domain → Application → Data → Presentation.
+
+---
+*Elisee ASSINOU*

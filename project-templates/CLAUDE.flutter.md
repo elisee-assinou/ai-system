@@ -103,3 +103,6 @@ graphify query "nom du module ou feature" # ~700 tokens vs 50k
 6. Enregistrer dans GetIt → `core/di/injection_container.dart`
 7. Ajouter la route → `core/router/app_router.dart`
 8. Valider → `flutter analyze && flutter test`
+
+---
+*Elisee ASSINOU*

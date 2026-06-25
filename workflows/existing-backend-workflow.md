@@ -91,3 +91,6 @@ Avant de planifier :
 - [ ] Tests présents
 - [ ] SCRIBE à jour (SCARs, GHOSTs, PATs si applicable)
 - [ ] Graphify rebuild après changements majeurs
+
+---
+*Elisee ASSINOU*

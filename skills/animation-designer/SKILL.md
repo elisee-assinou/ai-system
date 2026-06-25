@@ -163,3 +163,6 @@ export function AccessibleAnimation({ children }) {
 - Adding scroll effects
 - Designing loading states
 - Improving user feedback
+
+---
+*Elisee ASSINOU*

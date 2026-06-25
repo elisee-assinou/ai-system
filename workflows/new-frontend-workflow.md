@@ -82,3 +82,6 @@ Documenter dans SCRIBE : décisions design system (GHOST), patterns composants (
 - Server Components par défaut
 - Client Components uniquement pour interactions utilisateur
 - Pas de `any` — TypeScript strict partout
+
+---
+*Elisee ASSINOU*
