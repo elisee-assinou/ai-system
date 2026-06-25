@@ -5,7 +5,7 @@ Charge ce fichier EN PREMIER au début de chaque session.
 ## Architecture globale
 
 - **Stack complète** : `~/ai-system/architecture/context.md`
-- **Backend for-you-platform** : `/Users/eliseeassinou/for-you-platform/src/modules/`
+- **Backend du projet** : voir `CLAUDE.md` du projet pour le chemin
 
 ## Règles par stack
 
@@ -55,8 +55,7 @@ Tous disponibles globalement via symlinks dans `~/.claude/skills/`.
 ## Claude Code agents
 
 - **Config** : `~/.claude/settings.json`
-- **Agents disponibles** : `~/.claude/agents/` (11 agents)
-- **Docs multi-agent** : `~/.claude/ai-docs/multi-agent-system-overview.md`
+- **Agents disponibles** : `~/.claude/agents/` (9 agents)
 - **Hooks** : `~/.claude/hooks/` (4 hooks Python)
 
 ## SCRIBE + Graphify (infrastructure agentique)
@@ -67,12 +66,6 @@ Tous disponibles globalement via symlinks dans `~/.claude/skills/`.
 - **SCRIBE** : mémoire causale (pourquoi, douleur, décision, cicatrice)
 - **Graphify** : graphe structurel AST (navigation code en ~700 tokens vs ~50k)
 - **TENOR** : protocole de fiabilité (preuves machine, init obligatoire)
-
-## Projets actifs
-
-- `~/foryou_app/` — App Flutter passager (VTC + Livraison B2C, Bénin)
-- `~/for-you-platform/` — Backend Express.js (à vérifier si pertinent)
-- `~/miconnect-frontend/` — Frontend Next.js (à vérifier si pertinent)
 
 ## Ordre de chargement
 

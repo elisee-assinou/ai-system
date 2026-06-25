@@ -47,14 +47,14 @@ Claude lit le `CLAUDE.md` local et les agents prennent le relai.
 
 ## Stacks supportées
 
-| Stack | Règles | Usage |
-|-------|--------|-------|
-| Express.js + MongoDB | `rules/expressjs.md` | Backend for-you-platform |
-| Flutter + Bloc | `rules/flutter.md` | foryou_app, foryou_driver |
-| Django + DRF | `rules/django.md` | Backend Python |
-| NestJS + TypeORM | `rules/nestJs.md` | Backend TypeScript CQRS |
-| FastAPI + SQLAlchemy | `rules/python-fastapi.md` | API Python async |
-| Next.js App Router | `rules/frontend.md` + `rules/nextjs.md` | yo-business, miconnect |
+| Stack | Règles |
+|-------|--------|
+| Express.js + MongoDB | `rules/expressjs.md` |
+| Flutter + Bloc | `rules/flutter.md` |
+| Django + DRF | `rules/django.md` |
+| NestJS + TypeORM | `rules/nestJs.md` |
+| FastAPI + SQLAlchemy | `rules/python-fastapi.md` |
+| Next.js App Router | `rules/frontend.md` + `rules/nextjs.md` |
 
 Architecture commune : **DDD + Clean Architecture + Hexagonal** sur toutes les stacks.
 
@@ -243,20 +243,6 @@ cd ~/.claude/skills/ui-ux-promax && git pull
 cd ~/mon-projet
 source ~/ai-system/project-templates/project-init.sh express .
 ```
-
----
-
-## Projets actifs
-
-| Projet | Stack | Repo |
-|--------|-------|------|
-| `foryou_app` | Flutter | App passager VTC + Livraison (Bénin) |
-| `foryou_driver` | Flutter | App chauffeur/livreur |
-| `for-you-platform` | Express.js + MongoDB | Backend ForYou (18 modules) |
-| `yo-backend` | Express.js + Sequelize + MySQL | Backend billetterie Yo |
-| `yo-business` | Next.js 15 | Admin panel Yo |
-| `hbpay-workspace` | Microservices | HBPay fintech |
-| `flash-wallet-sdk` | SDK | Bitcoin Lightning → XOF Mobile Money |
 
 ---
 *Elisee ASSINOU*

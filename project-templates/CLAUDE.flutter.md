@@ -98,7 +98,7 @@ graphify query "nom du module ou feature" # ~700 tokens vs 50k
 1. Lire CLAUDE.md + `~/ai-system/` + initialiser TENOR si `.agent/` présent
 2. Consulter Graphify → `cat graphify-out/GRAPH_REPORT.md`
 3. Consulter le SCRIBE → `scribe-rag context` + `scribe-rag challenge`
-4. Consulter le backend → `~/for-you-platform/src/modules/{module}/`
+4. Consulter le backend → voir `CLAUDE.md` du projet pour le chemin du backend
 5. Générer dans l'ordre → Domain → Application → Data → Presentation
 6. Enregistrer dans GetIt → `core/di/injection_container.dart`
 7. Ajouter la route → `core/router/app_router.dart`

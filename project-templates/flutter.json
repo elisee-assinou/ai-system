@@ -1,8 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
-    "/Users/eliseeassinou/ai-system/architecture/context.md",
-    "/Users/eliseeassinou/ai-system/rules/flutter.md"
+    "$HOME/ai-system/architecture/context.md",
+    "$HOME/ai-system/rules/flutter.md"
   ],
   "permission": {
     "bash": {

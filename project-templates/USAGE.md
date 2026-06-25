@@ -41,7 +41,7 @@ opencode
 
 ```bash
 # 1. Créer l'app Flutter
-flutter create --org com.foryou mon_app
+flutter create --org com.yourcompany mon_app
 
 # 2. Initialiser le template (3e param = nom du projet)
 source ~/ai-system/project-templates/project-init.sh flutter mon_app "MonApp"
