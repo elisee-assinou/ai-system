@@ -27,16 +27,17 @@ Infrastructure de développement assisté par IA basée sur Claude Code. Central
 
 - [Claude Code](https://claude.ai/code) installé
 - Git installé
-- `~/agent-scribe-graphify/` — bundle SCRIBE + Graphify cloné
-
-```bash
-git clone <url-agent-scribe-graphify> ~/agent-scribe-graphify
-```
 
 ### Cloner ce repo
 
 ```bash
-git clone <url-ai-system> ~/ai-system
+git clone git@github.com:elisee-assinou/ai-system.git ~/ai-system
+```
+
+### Cloner le bundle SCRIBE + Graphify
+
+```bash
+git clone git@github.com:jackjosias/agent-scribe-graphify.git ~/agent-scribe-graphify
 ```
 
 ### Lier les skills Claude Code
@@ -786,6 +787,15 @@ cd ~/agent-scribe-graphify && git pull
 # Re-copier dans un projet existant si besoin
 cp -r ~/agent-scribe-graphify/.agent ~/mon-projet/.agent
 ```
+
+---
+
+## Repos
+
+| Repo | URL | Description |
+|------|-----|-------------|
+| **ai-system** | https://github.com/elisee-assinou/ai-system | Ce repo — règles, agents, workflows, skills |
+| **agent-scribe-graphify** | https://github.com/jackjosias/agent-scribe-graphify | Bundle SCRIBE + Graphify + TENOR |
 
 ---
 
