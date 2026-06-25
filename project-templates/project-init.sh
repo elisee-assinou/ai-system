@@ -125,12 +125,105 @@ elif [ ! -f "$DIR/CLAUDE.md" ]; then
     EXTRA_LINE="- $EXTRA_RULES"
   fi
 
+  # Determine agent selon le type de stack
+  case "$STACK" in
+    express|express-mongo|nestjs|nest|fastapi|python|django)
+      IMPL_AGENT="backend-engineer" ;;
+    fullstack|nextjs)
+      IMPL_AGENT="frontend-ui-specialist" ;;
+    *)
+      IMPL_AGENT="backend-engineer" ;;
+  esac
+
+  # Determine sections specifiques par type de stack
+  case "$STACK" in
+    express|express-mongo|nestjs|nest|fastapi|python|django)
+      STACK_SECTION="## API
+
+- **Base URL** : \`http://localhost:PORT\`  ← A personnaliser
+- **Auth** : JWT Bearer token
+- **Format reponse** : \`{ success: boolean, data: any, message: string }\`  ← A adapter
+- **Pagination** : \`{ data: [], total: number, page: number, limit: number }\`  ← A adapter
+
+## Base de donnees
+
+- **Type** : TODO (MongoDB / PostgreSQL / MySQL)
+- **ORM** : TODO (Mongoose / TypeORM / Prisma / SQLAlchemy)
+- **Collections/Tables principales** :
+  - TODO : decrire tes tables/collections ici
+
+## Variables d'environnement
+
+\`\`\`env
+PORT=3000
+NODE_ENV=development
+DATABASE_URL=TODO
+JWT_SECRET=TODO
+# Ajouter les autres variables necessaires
+\`\`\`" ;;
+    fullstack|nextjs)
+      STACK_SECTION="## Backend
+
+- **Repo** : \`../mon-backend\`  ← Chemin vers le backend
+- **Base URL** : variable d'env \`NEXT_PUBLIC_API_URL\`
+- **Auth** : TODO (JWT / Session / OAuth)
+- **Format reponse** : \`{ success: boolean, data: any, message: string }\`  ← A adapter
+- **Pagination** : \`{ data: [], total: number, page: number, limit: number }\`  ← A adapter
+
+## Design
+
+- **Style** : TODO (minimaliste / glassmorphic / material / etc.)
+- **Palette** :
+  - Primary : \`#TODO\`
+  - Background : \`#TODO\`
+  - Text : \`#TODO\`
+  - Error : \`#TODO\`
+  - Success : \`#TODO\`
+- **Fonts** : TODO (Inter / Poppins / etc.)
+
+## Variables d'environnement
+
+\`\`\`env
+NEXT_PUBLIC_API_URL=http://localhost:3000
+# Ajouter les autres variables necessaires
+\`\`\`" ;;
+  esac
+
   cat > "$DIR/CLAUDE.md" << CLAUDEMD
 # $NAME
 
+## Description
+
+TODO : Decris ici ce que fait le projet, pour qui, et son contexte metier.
+
 ## Stack
-- $STACK
-- Architecture: $ARCH_LABEL
+
+- **Framework** : $STACK
+- **Architecture** : $ARCH_LABEL
+- **Langage** : TypeScript strict / Python 3.12+  ← A adapter
+- **Version** : TODO
+
+$STACK_SECTION
+
+## Modules (bounded contexts)
+
+TODO : Liste ici tous les modules/features du projet avec leur statut.
+
+| Module | Description | Statut |
+|--------|-------------|--------|
+| auth | Authentification, JWT, OTP | 🔲 A faire |
+| user | Profil, gestion compte | 🔲 A faire |
+| TODO | TODO | 🔲 A faire |
+
+## Commandes
+
+\`\`\`bash
+npm run dev        # Demarrer en developpement
+npm run build      # Build production
+npm run test       # Lancer les tests
+npm run lint       # Linter
+npm run typecheck  # Verification TypeScript
+\`\`\`
 
 ## Architecture — OBLIGATOIRE
 
@@ -138,21 +231,11 @@ Lis et applique strictement ces fichiers de regles avant de generer du code :
 - $ARCH/context.md (principes generaux)
 - $ARCH_RULES ($ARCH_LABEL)
 $EXTRA_LINE
+- ~/ai-system/rules/scribe-graphify.md (si .agent/ present)
 
-## Workflow obligatoire — sous-agents
+## SCRIBE + Graphify
 
-Tu DOIS utiliser les sous-agents pour chaque tache. Ne jamais coder directement sans passer par eux.
-
-### Ordre d'execution pour chaque module/feature :
-1. **project-manager** — cree le plan, decoupe en taches, suit l'avancement
-2. **feature-architect-planner** — planifie l'implementation technique
-3. **frontend-ui-specialist** ou **backend-engineer** — implemente le code
-4. **code-quality-reviewer** — review apres implementation
-5. **project-manager** — marque done, passe au module suivant
-
-### SCRIBE + Graphify (bundle .agent/ present dans ce projet)
-
-Initialisation obligatoire au debut de chaque session :
+Initialisation obligatoire au debut de CHAQUE session :
 \`\`\`bash
 .agent/workflow/scribe/scribe tenor-init --type extension
 \`\`\`
@@ -162,8 +245,8 @@ Avant chaque implementation :
 .agent/workflow/scribe/scribe-rag context
 .agent/workflow/scribe/scribe-rag challenge "<ce que tu vas faire>"
 \`\`\`
-- STOP → ne pas implementer
-- REVIEW → lire les warnings et decider
+- STOP → ne pas implementer, comprendre le blocage
+- REVIEW → lire les warnings, decider avec l'utilisateur
 - PROCEED → go
 
 Avant de lire des fichiers pour comprendre le code :
@@ -175,21 +258,34 @@ graphify query "<ta question>"
 Apres un bug resolu en > 2 tentatives → SCAR immediat.
 Fin de session → "Qu'est-ce qui fera souffrir le prochain LLM ?"
 
-Regles absolues agents :
-- Lire ~/ai-system/rules/scribe-graphify.md avant tout
-- Graphify avant grep/lecture fichiers
-- SCRIBE avant implementation
-- Jamais git add . (exclure .agent/ scribe-out/ graphify-out/)
+## Workflow obligatoire — sous-agents
 
-### Comportement attendu :
-- Apres chaque tache : met a jour le plan, marque done, dis ce qui reste
-- Enchaine automatiquement sur la tache suivante sauf si l'utilisateur dit "stop"
+Ne jamais coder directement. Toujours passer par les agents.
+
+### Ordre pour chaque module/feature :
+1. **project-manager** — cree le plan, decoupe en taches
+2. **feature-architect-planner** — planifie les fichiers a creer
+3. **$IMPL_AGENT** — implemente (domain → application → infrastructure → presentation)
+4. **code-quality-reviewer** — review apres implementation
+5. **git-workflow-specialist** — commit avec message conventionnel
+6. **project-manager** — marque done, passe au suivant
+
+### Regles absolues :
+- Graphify avant grep/lecture de fichiers
+- SCRIBE avant implementation
+- Jamais git add . → toujours git add <fichiers-specifiques>
+- Jamais committer .agent/ scribe-out/ graphify-out/
 
 ### Commandes utilisateur :
-- "Module suivant" → enchaine
+- "Module suivant" → enchaine automatiquement
 - "Stop" → arrete
 - "Status" → project-manager donne l'avancement
 - "Review" → code-quality-reviewer valide
+
+## Notes specifiques
+
+TODO : Ajoute ici tout ce que les agents doivent savoir sur ce projet
+qui n'est pas derive du code (decisions, contraintes, regles metier, etc.)
 CLAUDEMD
   echo "✅ CLAUDE.md genere ($ARCH_LABEL)"
 else
