@@ -37,9 +37,14 @@ Charge ce fichier EN PREMIER au début de chaque session.
 
 ## Skills
 
-| Skill | Fichier |
-|-------|---------|
-| Pixel Perfect (UI) | `~/ai-system/skills/pixel-perfect` |
+| Skill | Fichier | Rôle |
+|-------|---------|------|
+| **pixel-perfect** | `~/ai-system/skills/pixel-perfect` | Figma/screenshot → code pixel-perfect |
+| **animation-designer** | `~/ai-system/skills/animation-designer` | Animations Framer Motion + CSS |
+| **core-3d-animation** | `~/ai-system/skills/core-3d-animation` | Three.js, R3F, BabylonJS, GSAP, Framer Motion |
+| **css-animation** | `~/ai-system/skills/css-animation` | Walkthroughs HTML/CSS pour démos et onboarding |
+
+Tous les skills sont disponibles globalement via symlinks dans `~/.claude/skills/`.
 
 ## Claude Code agents
 
