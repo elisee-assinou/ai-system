@@ -71,19 +71,37 @@ cp ~/ai-system/.claude/agents/* ~/.claude/agents/
 
 ### Étapes
 
+> ⚠️ Le script `project-init.sh` **n'initialise pas le projet** (pas de `mkdir`, `git init`, `npm init`).
+> Il ajoute uniquement la couche agentique (CLAUDE.md, .agent/, .gitignore, opencode.json)
+> sur un projet déjà existant.
+
 ```bash
-# 1. Créer le projet
+# 1. Créer et initialiser le projet toi-même
 mkdir mon-api && cd mon-api
 git init
-npm init -y   # ou: poetry init, pip install, etc.
+npm init -y   # ou: poetry init | pip install | etc.
 
-# 2. Initialiser avec le template
+# 2. Lancer le script — il ajoute la couche agentique sur ton projet
 source ~/ai-system/project-templates/project-init.sh express mon-api "Mon API"
-#                                                     ^^^^^^  nom-dossier  nom-affiché
+#                                                     ^^^^^^  ^^^^^^^^  ^^^^^^^^^
+#                                                     stack   dossier   nom affiché dans CLAUDE.md
 
 # 3. Ouvrir Claude Code
 claude
 ```
+
+**Ce que le script fait exactement :**
+- Copie `~/agent-scribe-graphify/.agent/` → `.agent/` (SCRIBE + Graphify + TENOR)
+- Lance `scribe bootstrap` (initialise la mémoire causale)
+- Génère `CLAUDE.md` à la racine (stack, archi, workflow agents)
+- Crée `.opencode/opencode.json` (si tu utilises opencode)
+- Ajoute `.agent/ scribe-out/ graphify-out/ ai-docs/` au `.gitignore`
+
+**Ce que le script ne fait PAS :**
+- Créer le dossier
+- Initialiser git
+- Installer les dépendances npm/pip
+- Créer la structure `src/`
 
 ### Ce que le script génère
 
@@ -150,11 +168,14 @@ src/
 ## Nouveau projet frontend
 
 ```bash
+# 1. Créer le projet Next.js (commande officielle)
 npx create-next-app@latest mon-frontend --typescript --tailwind --app
 cd mon-frontend
 
+# 2. Ajouter la couche agentique
 source ~/ai-system/project-templates/project-init.sh nextjs mon-frontend "Mon Frontend"
 
+# 3. Ouvrir Claude Code
 claude
 ```
 
@@ -202,11 +223,14 @@ src/
 ## Nouveau projet Flutter
 
 ```bash
+# 1. Créer l'app Flutter (commande officielle)
 flutter create --org com.yourcompany mon_app
 cd mon_app
 
+# 2. Ajouter la couche agentique
 source ~/ai-system/project-templates/project-init.sh flutter mon_app "MonApp"
 
+# 3. Ouvrir Claude Code
 claude
 ```
 
