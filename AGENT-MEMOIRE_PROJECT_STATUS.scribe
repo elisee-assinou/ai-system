@@ -1,0 +1,352 @@
+schema_version: "TENOR_SCRIBE_v3.2"
+meta_project:
+  project_name: "ai-system"
+  stack: "Unknown"
+  initialized_at: "2026-06-25T19:54:47.226671Z"
+  scribe_version: "3.2-local-causal-retrieval"
+  graphify_graph: "graphify-out/graph.json"
+meta_project:
+  project_name: "ai-system"
+  stack: "Markdown + Bash — système de configuration agentique"
+  description: "Infrastructure Claude Code — règles DDD, agents, workflows, skills, templates"
+  github: "https://github.com/elisee-assinou/ai-system"
+  bundle_scribe: "https://github.com/jackjosias/agent-scribe-graphify"
+  agents_path: "~/.claude/agents/ (non versionné ici — personnel)"
+tiers:
+  hot: ["PAT-GRAPH-001", "PAT-GIT-001", "PAT-SCRIBE-RAG-001", "PAT-SCRIBE-STRICT-CAUSAL-DENSITY-001", "PAT-SCRIBE-PAIN-CAPTURE-REFLEX-001", "GHOST-SCRIBE-RAG-SEL-DIRECT-001", "GHOST-SCRIBE-STRICT-MEMORY-001", "GHOST-AGENTS-DEDUP-001", "GHOST-SKILLS-STRUCTURE-001", "GHOST-SCRIBE-INTEGRATION-001", "PAT-AGENT-SHARED-RULES-001", "PAT-SKILL-SYMLINK-001", "SCAR-COMMENT-MISLEADING-001"]
+  warm: ["GHOST-ASSISTANT-SAFE-MODE-001", "GHOST-STITCH-PROMPT-001"]
+  cold: []
+invariants:
+  - id: "INV-F001"
+    status: "ACTIVE"
+    tier: "hot"
+    titre: "Graphify before codebase work"
+    l0_abstract: "Read graphify-out/GRAPH_REPORT.md before architecture, dependency, or blast-radius work when it exists."
+  - id: "INV-F002"
+    status: "ACTIVE"
+    tier: "hot"
+    titre: "SCRIBE stores causal memory only"
+    l0_abstract: "Write decisions, failures, rejected options, and learned safeguards in SCRIBE; leave structural facts to Graphify."
+  - id: "INV-F003"
+    status: "ACTIVE"
+    tier: "hot"
+    titre: "Anti-drift closing question"
+    l0_abstract: "Before closing a real coding session, ask what will hurt the next LLM if undocumented; concrete future pain becomes SCAR or GHOST, otherwise JOURNAL is enough."
+  - id: "INV-F004"
+    status: "ACTIVE"
+    tier: "hot"
+    titre: "Generated agent state stays out of product commits"
+    l0_abstract: "Version host product source by default; keep graphify-out and scribe-out out of commits unless explicitly requested."
+patterns:
+  - id: "PAT-GRAPH-001"
+    date: "2026-06-25"
+    schema_patch_date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Graphify and SCRIBE separation"
+    l0_abstract: "Use Graphify for structural code facts and SCRIBE for causal project memory."
+    scope: "dev"
+    evidence:
+      type: "OBSERVED"
+      source: "JOURNAL-000"
+      observable: "Bootstrap initialized a project with separate graphify-out, scribe-out, and SCRIBE memory surfaces."
+    liens_causaux:
+      source: "JOURNAL-000"
+  - id: "PAT-GIT-001"
+    date: "2026-06-25"
+    schema_patch_date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Agent artifact versioning boundary"
+    l0_abstract: "Commit/push product source by default; share AGENT-MEMOIRE_PROJECT_STATUS.scribe only when causal memory should be collaborative, never graphify-out or scribe-out by default."
+    scope: "dev"
+    evidence:
+      type: "REASONED"
+      source: "JOURNAL-000"
+      observable: "graphify-out and scribe-out are generated local state, while AGENT-MEMOIRE_PROJECT_STATUS.scribe is optional shared causal memory."
+    liens_causaux:
+      source: "JOURNAL-000"
+
+  - id: "PAT-SCRIBE-RAG-001"
+    date: "2026-06-25"
+    schema_patch_date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "scribe-rag preflight proof"
+    l0_abstract: "Agents must use scribe-rag preflight/context/query/challenge as the proof surface before significant work."
+    scope: "dev bundle"
+    approved: true
+    evidence:
+      type: "OBSERVED"
+      source: "JOURNAL-000"
+      observable: "Bootstrap installed the portable scribe-rag CLI and the always-on host rule points every model to it."
+    liens_causaux:
+      source: "JOURNAL-000"
+  - id: "PAT-SCRIBE-STRICT-CAUSAL-DENSITY-001"
+    date: "2026-06-25"
+    schema_patch_date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Dashboard causal-density is informational"
+    l0_abstract: "Do not create SCAR/GHOST/PAT to clean dashboard ratios; write causal memory only after real pain, bugs, durable decisions, or rejected alternatives."
+    scope: "dev bundle"
+    approved: true
+    evidence:
+      type: "REASONED"
+      source: "JOURNAL-000"
+      observable: "A low causal-density ratio is a quality reminder, not a write trigger."
+    liens_causaux:
+      source: "GHOST-SCRIBE-STRICT-MEMORY-001"
+  - id: "PAT-SCRIBE-PAIN-CAPTURE-REFLEX-001"
+    date: "2026-06-25"
+    schema_patch_date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Real pain must become an immediately reusable SCAR"
+    l0_abstract: "Do not chase causal-density ratios, but any resolved bug after more than two attempts, regression, costly rollback, or broken browser/visual smoke must be recorded immediately as a SCAR with cause_racine, resolution, and test_binding; before adjacent future work, retrieve and challenge against that memory."
+    scope: "dev bundle"
+    approved: true
+    evidence:
+      type: "REASONED"
+      source: "JOURNAL-000"
+      observable: "Bootstrap installs the pain-capture reflex so copied SCRIBE bundles keep the same host-agent behavior across projects."
+    regle_operationnelle:
+      - "Bug resolved after more than two attempts => SCAR immediately, not journal-only."
+      - "Regression, costly rollback, or broken browser/visual smoke => SCAR immediately with test_binding."
+      - "SCAR must include cause_racine, resolution, test_binding, and attention_future when relevant."
+      - "Before a task near a known scar, run scribe-rag query/explain/challenge so the memory is exploited at decision time."
+      - "Never create SCAR/GHOST/PAT solely to improve a causal-density ratio."
+    liens_causaux:
+      - "PAT-SCRIBE-STRICT-CAUSAL-DENSITY-001"
+      - "INV-F003"
+ghosts:
+  - id: "GHOST-SCRIBE-RAG-SEL-DIRECT-001"
+    titre: "No SEL direct retrieval for agents"
+    date: "2026-06-25"
+    schema_patch_date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    l0_abstract: "SEL direct context/query/challenge is rejected for host-agent retrieval; use scribe-rag so retrieval is compact and auditable."
+    scope: "dev bundle"
+    alternatives_rejetees:
+      - nom: "SEL direct retrieval"
+        raison_rejet: "It bypasses the compact agent proof surface and makes policy compliance invisible."
+    ne_pas_reproposer:
+      - "appeler SEL direct context query pour retrieval agent"
+      - "utiliser scribe context au lieu de scribe-rag"
+      - "lire AGENT-MEMOIRE_PROJECT_STATUS.scribe directement pour retrieval agent"
+    evidence:
+      type: "OBSERVED"
+      source: "JOURNAL-000"
+      observable: "The host-facing retrieval path is scribe-rag; SEL remains the internal guard/write engine."
+    liens_causaux:
+      source: "PAT-SCRIBE-RAG-001"
+  - id: "GHOST-SCRIBE-STRICT-MEMORY-001"
+    titre: "Strict causal memory beats clean dashboard"
+    date: "2026-06-25"
+    schema_patch_date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    l0_abstract: "Keep SCRIBE strict even when the dashboard shows low causal density; a visible warning is better than artificial memory."
+    scope: "dev bundle"
+    alternatives_rejetees:
+      - nom: "Artificial dashboard cleanup memory"
+        raison_rejet: "It improves the ratio while degrading retrieval with entries that did not come from real project pain."
+      - nom: "Treat P2 density as mandatory write work"
+        raison_rejet: "The P2 signal is a discipline reminder; it becomes actionable only when a concrete bug, decision, or rejected option exists."
+    ne_pas_reproposer:
+      - "creer SCAR/GHOST/PAT pour nettoyer le dashboard"
+      - "traiter une alerte densite causale comme dette bloquante"
+    evidence:
+      type: "REASONED"
+      source: "JOURNAL-000"
+      observable: "Strict causal memory preserves retrieval quality better than a clean dashboard ratio."
+    liens_causaux:
+      source: "PAT-SCRIBE-STRICT-CAUSAL-DENSITY-001"
+journal:
+  - id: "JOURNAL-000"
+    date: "2026-06-25"
+    mode: "STANDARD"
+    agent_type: "unknown"
+    surface: ""
+    hot_entries_consulted: ["PAT-GRAPH-001", "PAT-GIT-001", "PAT-SCRIBE-RAG-001", "PAT-SCRIBE-STRICT-CAUSAL-DENSITY-001", "GHOST-SCRIBE-STRICT-MEMORY-001"]
+    l0_abstract: "Bootstrap initial."
+    pourquoi: "This project received the portable SCRIBE/TENOR local causal retrieval bundle. Graphify owns structural retrieval; SCRIBE starts as strict causal memory, dashboard density warnings are informational, and generated agent runtime artifacts stay outside product commits by default."
+    scribe_delta: "PAT-GRAPH-001 | PAT-GIT-001 | PAT-SCRIBE-RAG-001 | PAT-SCRIBE-STRICT-CAUSAL-DENSITY-001 | GHOST-SCRIBE-RAG-SEL-DIRECT-001 | GHOST-SCRIBE-STRICT-MEMORY-001 | JOURNAL-000"
+    multi_agent_context:
+      surface: ""
+      other_agents_active: []
+metrics:
+  sessions_total: 1
+  scars_total: 0
+  vaccins_actifs: 0
+  taux_recidive: 0.0
+  bugs_prevenus_par_vaccin: 0
+  complexite_moyenne: 0.0
+  mode_distribution:
+    CRITICAL: 0
+    STANDARD: 1
+    QUICK: 0
+  dette_p0_p1_courante: 0
+  dezoom_total: 0
+  taux_dezoom_par_session: 0.0
+  torvalds_items_total: 0
+  torvalds_items_traites: 0
+  taux_completion_prod_moyenne: 0.0
+  delta_feuille_vs_prod_moyen: 0.0
+  graphify_queries_total: 0
+  tokens_saved_via_graphify: 0
+
+# ── GHOSTS — Décisions architecturales ──────────────────────────────────────
+
+ghosts:
+  - id: "GHOST-AGENTS-DEDUP-001"
+    date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Agents dédupliqués — règles partagées dans CLAUDE.md"
+    type: "CHOISIE"
+    severite: "HIGH"
+    l0_abstract: "Les 9 agents avaient ~200 lignes chacun avec 60% de duplication (CORE PRINCIPLES, FORBIDDEN PATTERNS, STEP 0). Décision : factoriser dans ~/.claude/agents/CLAUDE.md (140 lignes partagées), chaque agent réduit à 47-75 lignes."
+    l2_details: >
+      Avant : 1611 lignes totales d'agents, chaque agent répétait
+      les mêmes règles (forbidden patterns, implementation order, shared kernel).
+      Après : 669 lignes totales (-58%). CLAUDE.md partagé contient
+      architecture principles, forbidden patterns, implementation order,
+      shared kernel, SCRIBE/Graphify reflexes, orchestration, report format.
+      Chaque agent ne contient plus que son rôle spécifique + stack differences.
+    ne_pas_reproposer:
+      - "Remettre les règles communes dans chaque agent individuellement"
+      - "Créer un système d'include/import entre agents (pas supporté)"
+    liens_causaux:
+      source: "JOURNAL-001"
+
+  - id: "GHOST-SKILLS-STRUCTURE-001"
+    date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Skills versionnés dans ai-system, symlinks dans ~/.claude/skills/"
+    type: "CHOISIE"
+    severite: "MEDIUM"
+    l0_abstract: "Les skills étaient éparpillés (yo-business local, ~/.claude/skills/ sans source de vérité). Décision : ai-system/skills/ = source unique, symlinks dans ~/.claude/skills/."
+    l2_details: >
+      Pattern établi : copier dans ai-system/skills/mon-skill,
+      créer symlink ln -sf ~/ai-system/skills/mon-skill ~/.claude/skills/mon-skill,
+      committer dans ai-system. Les skills tiers (ui-ux-promax, marketplace) restent
+      gérés par leurs systèmes respectifs sans symlink dans ai-system.
+      pixel-perfect avait déjà ce pattern — on l'a généralisé à tous les custom skills.
+    liens_causaux:
+      source: "JOURNAL-001"
+
+  - id: "GHOST-SCRIBE-INTEGRATION-001"
+    date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "agent-scribe-graphify reste un repo externe — jamais copié dans ai-system"
+    type: "CHOISIE"
+    severite: "HIGH"
+    l0_abstract: "Le bundle .agent/ n'est PAS dans ai-system. Il est dans ~/agent-scribe-graphify/ (repo Git externe). project-init.sh le copie dans chaque projet. git pull sur agent-scribe-graphify ne casse rien."
+    l2_details: >
+      Pattern hybride : ai-system/rules/scribe-graphify.md contient les RÉFLEXES
+      (comment utiliser SCRIBE/Graphify), le MOTEUR reste dans ~/agent-scribe-graphify/.
+      Les projets reçoivent une copie locale de .agent/ via project-init.sh.
+      Ne jamais versionner .agent/ dans ai-system ou dans les projets.
+    ne_pas_reproposer:
+      - "Copier le bundle .agent/ directement dans ai-system/"
+      - "Versionner scribe-out/ ou graphify-out/ dans git"
+    liens_causaux:
+      source: "JOURNAL-001"
+
+  - id: "GHOST-ASSISTANT-SAFE-MODE-001"
+    date: "2026-06-25"
+    tier: "warm"
+    status: "ACTIVE"
+    titre: "assistant-safe-mode.md supprimé — redondant"
+    type: "CHOISIE"
+    severite: "LOW"
+    l0_abstract: "rules/assistant-safe-mode.md répétait des règles déjà dans frontend.md, system-fullstack.md et context.md. Supprimé pour éviter la duplication."
+    liens_causaux:
+      source: "JOURNAL-001"
+
+  - id: "GHOST-STITCH-PROMPT-001"
+    date: "2026-06-25"
+    tier: "warm"
+    status: "ACTIVE"
+    titre: "stitch-auth-screens.md déplacé dans prompts/project-specific/"
+    type: "CHOISIE"
+    severite: "LOW"
+    l0_abstract: "Ce fichier contient les specs design FORYOU (projet personnel). Déplacé dans project-specific/ pour ne pas polluer le système générique partageable."
+    liens_causaux:
+      source: "JOURNAL-001"
+
+# ── PATTERNS — Solutions réutilisables ──────────────────────────────────────
+
+  - id: "PAT-AGENT-SHARED-RULES-001"
+    date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Pattern : règles partagées agents via CLAUDE.md"
+    l0_abstract: "Toute règle qui s'applique à 3+ agents va dans ~/.claude/agents/CLAUDE.md. Les agents individuels ne contiennent que leur rôle + différences de stack."
+    scope: "agents"
+    evidence:
+      type: "OBSERVED"
+      source: "JOURNAL-001"
+      observable: "Réduction de 1611 à 669 lignes en factorisent les règles communes dans CLAUDE.md partagé."
+    liens_causaux:
+      source: "JOURNAL-001"
+
+  - id: "PAT-SKILL-SYMLINK-001"
+    date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Pattern : ajouter un skill Claude Code"
+    l0_abstract: "1) cp -r ~/mon-skill ~/ai-system/skills/mon-skill  2) ln -sf ~/ai-system/skills/mon-skill ~/.claude/skills/mon-skill  3) git add + commit + push"
+    scope: "skills"
+    evidence:
+      type: "OBSERVED"
+      source: "JOURNAL-001"
+      observable: "Pattern validé sur pixel-perfect, animation-designer, core-3d-animation, css-animation, cache-audit."
+    liens_causaux:
+      source: "JOURNAL-001"
+
+# ── SCARS — Bugs/problèmes résolus ──────────────────────────────────────────
+
+scars:
+  - id: "SCAR-COMMENT-MISLEADING-001"
+    date: "2026-06-25"
+    tier: "hot"
+    status: "ACTIVE"
+    titre: "Commentaire trompeur dans project-init.sh"
+    cause_racine: "Le commentaire ligne 5 disait 'Ce script fait TOUT' alors qu'il ne fait que la couche agentique. Il ne crée pas le projet (mkdir, git init, npm init)."
+    resolution: "Commentaire corrigé : 'PRE-REQUIS : le projet doit déjà exister. Ce script ajoute uniquement la couche agentique.'"
+    test_binding: "Vérifier que le commentaire en tête de project-init.sh mentionne explicitement les pré-requis."
+    liens_causaux:
+      source: "JOURNAL-001"
+
+# ── JOURNAL ──────────────────────────────────────────────────────────────────
+
+journaux:
+  - id: "JOURNAL-001"
+    date: "2026-06-25"
+    tier: "hot"
+    session_type: "STANDARD"
+    agent: "extension-20260625-5579f1d8192c"
+    titre: "Session fondatrice — construction de ai-system"
+    l0_abstract: "Session complète de construction du système agentique : audit ai-system, déduplication agents, intégration SCRIBE/Graphify, création README complet, worktrees, skills, GitHub push."
+    taches:
+      - type: "FEAT"
+        description: "Audit et amélioration de ai-system existant"
+      - type: "REFACTOR"
+        description: "Déduplication des 9 agents (1611 → 669 lignes, -58%)"
+      - type: "FEAT"
+        description: "Intégration profonde SCRIBE/Graphify dans tous les fichiers"
+      - type: "FEAT"
+        description: "README complet avec tous les scénarios, worktrees, SCRIBE"
+      - type: "FEAT"
+        description: "Skills versionnés dans ai-system + symlinks globaux"
+      - type: "FEAT"
+        description: "GitHub push : https://github.com/elisee-assinou/ai-system"
+      - type: "FEAT"
+        description: "Bootstrap SCRIBE sur ai-system lui-même"
+    scribe_delta: "GHOST-AGENTS-DEDUP-001, GHOST-SKILLS-STRUCTURE-001, GHOST-SCRIBE-INTEGRATION-001, PAT-AGENT-SHARED-RULES-001, PAT-SKILL-SYMLINK-001, SCAR-COMMENT-MISLEADING-001"
+    resultat_final: "ai-system versionné sur GitHub, SCRIBE actif, agents dédupliqués, skills organisés"

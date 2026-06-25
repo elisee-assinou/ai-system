@@ -2,3 +2,7 @@
 .DS_Store
 *.pyc
 __pycache__/
+.agent/
+scribe-out/
+graphify-out/
+ai-docs/
