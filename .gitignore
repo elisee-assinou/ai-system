@@ -6,3 +6,6 @@ __pycache__/
 scribe-out/
 graphify-out/
 ai-docs/
+.codex/
+.graphifyignore
+AGENTS.md
