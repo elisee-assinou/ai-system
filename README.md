@@ -391,40 +391,91 @@ L'agent `backend-engineer` :
 | `"Ce fichier fait 400 lignes"` | file-refactor-organizer le découpe |
 | `"Crée une PR"` | git-workflow-specialist push + crée la PR sur GitHub |
 
-### Les 9 agents
+---
 
-| Agent | Modèle | Rôle |
-|-------|--------|------|
-| `project-manager` | Sonnet | Gère les plans dans `ai-docs/planning/` |
-| `feature-architect-planner` | Sonnet | Crée le plan technique avant d'implémenter |
-| `backend-engineer` | Sonnet | Code backend complet (auto-détecte la stack) |
-| `frontend-ui-specialist` | Sonnet | Composants, pages, hooks, state |
-| `flutter-mobile-developer` | Sonnet | Modules Flutter DDD complets |
-| `code-quality-reviewer` | Sonnet | Review architecture + lint + tests |
-| `git-workflow-specialist` | Sonnet | Commits, branches, worktrees |
-| `documentation-specialist` | **Opus** | Recherche libs (Context7), docs `ai-docs/` |
+### Les 9 agents et leur rôle exact
+
+| Agent | Modèle | Ce qu'il fait |
+|-------|--------|--------------|
+| `project-manager` | Sonnet | Crée et suit le plan dans `ai-docs/planning/`. Marque done, enchaîne. |
+| `feature-architect-planner` | Sonnet | Liste les fichiers exacts à créer par layer avant de coder |
+| `backend-engineer` | Sonnet | Code tout le backend — auto-détecte Express/Django/NestJS/FastAPI |
+| `frontend-ui-specialist` | Sonnet | Composants, pages, hooks, state — React/Next.js |
+| `flutter-mobile-developer` | Sonnet | Modules Flutter DDD complets (domain → data → presentation) |
+| `code-quality-reviewer` | Sonnet | Review architecture + lint + tests post-implémentation |
+| `git-workflow-specialist` | Sonnet | Commits, branches, worktrees, PRs |
+| `documentation-specialist` | **Opus** | Recherche libs (Context7 + web), docs dans `ai-docs/` |
 | `file-refactor-organizer` | Sonnet | Split fichiers > 300 lignes |
 
-### Ce que les agents font automatiquement
+---
 
-À chaque session :
-- Lisent le `CLAUDE.md` du projet (stack, modules, règles)
-- Lisent les fichiers de règles dans `~/ai-system/rules/<stack>.md`
-- Si `.agent/` présent → consultent SCRIBE avant d'implémenter
-- Si `.agent/` présent → utilisent Graphify au lieu de lire les fichiers bruts
+### Le flux complet — agents + SCRIBE/Graphify
+
+> SCRIBE et Graphify ne sont pas des agents Claude Code.
+> Ce sont des **outils transversaux** que chaque agent utilise en interne à chaque étape.
+
+```
+TOI : "ajoute le module KYC"
+           ↓
+┌─────────────────────────────────────────────────┐
+│ project-manager                                 │
+│  ├── scribe-rag context     ← mémoire projet   │
+│  ├── scribe-rag challenge   ← valider le plan  │
+│  └── crée ai-docs/planning/active/kyc-plan.md  │
+└─────────────────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────────────────┐
+│ feature-architect-planner                       │
+│  ├── graphify query "kyc"   ← carte du code    │
+│  ├── scribe-rag query       ← décisions passées│
+│  └── liste les fichiers à créer avec paths     │
+└─────────────────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────────────────┐
+│ backend-engineer / frontend-ui-specialist       │
+│  ├── scribe-rag challenge   ← risques connus   │
+│  ├── graphify explain "X"   ← dépendances      │
+│  ├── [implémente le code]                       │
+│  └── bug > 2 tentatives → SCAR auto            │
+└─────────────────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────────────────┐
+│ code-quality-reviewer                           │
+│  ├── graphify query "blast radius"  ← impact  │
+│  └── review contre ~/ai-system/rules/<stack>   │
+└─────────────────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────────────────┐
+│ git-workflow-specialist                         │
+│  ├── scribe worktree   ← sépare source/généré  │
+│  └── git add <fichiers-spécifiques> && commit  │
+└─────────────────────────────────────────────────┘
+           ↓
+┌─────────────────────────────────────────────────┐
+│ project-manager                                 │
+│  └── "KYC done. Module suivant ?"              │
+└─────────────────────────────────────────────────┘
+```
+
+**Tes agents = les mains qui codent**
+**SCRIBE = la mémoire qui guide (pourquoi, douleur, décisions)**
+**Graphify = les yeux qui voient le code (quoi, où, comment)**
+
+---
 
 ### Planification automatique
 
 ```
-"Je veux implémenter les modules User, Ride et Payment de mon backend"
+"Je veux implémenter les modules User, Ride et Payment"
 ```
 
-`project-manager` va créer `ai-docs/planning/active/backend-modules-plan.md` avec :
+`project-manager` crée `ai-docs/planning/active/backend-modules-plan.md` :
 ```
-Tâche 1 : Domain User (backend-engineer)
-Tâche 2 : Application User (backend-engineer) — dépend de 1
-Tâche 3 : Infrastructure User (backend-engineer) — dépend de 2
-Tâche 4 : Review User (code-quality-reviewer) — dépend de 3
+Tâche 1 : Domain User       → backend-engineer
+Tâche 2 : Application User  → backend-engineer  (dépend de 1)
+Tâche 3 : Infra User        → backend-engineer  (dépend de 2)
+Tâche 4 : Review User       → code-quality-reviewer  (dépend de 3)
+Tâche 5 : Domain Ride       → backend-engineer  (dépend de 4)
 ...
 ```
 
