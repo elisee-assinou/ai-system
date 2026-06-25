@@ -1,0 +1,23 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "/Users/eliseeassinou/ai-system/architecture/context.md",
+    "/Users/eliseeassinou/ai-system/rules/flutter.md"
+  ],
+  "permission": {
+    "bash": {
+      "flutter *": "allow",
+      "dart *": "allow",
+      "flutter analyze": "allow",
+      "flutter test": "allow",
+      "flutter build *": "allow",
+      "flutter pub *": "allow",
+      "git status": "allow",
+      "git diff": "allow",
+      "git log *": "allow",
+      "*": "ask"
+    },
+    "edit": "allow",
+    "read": "allow"
+  }
+}
