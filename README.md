@@ -852,6 +852,11 @@ cp -r ~/agent-scribe-graphify/.agent ~/mon-projet/.agent
 
 ## Skills disponibles
 
+> ⚠️ **Règle transversale UI** : `~/ai-system/rules/design-frontend.md` s'applique à **tout**
+> code produisant de l'UI (React, Next.js, Flutter) — responsivité mobile-first, pixel-perfect,
+> MCP design (Stitch/Figma), design tokens, accessibilité, et **zéro emoji (icônes uniquement)**.
+> Elle est lue automatiquement par `frontend-ui-specialist` et `flutter-mobile-developer`.
+
 ### Skills dans ce repo (versionné + symlinké dans `~/.claude/skills/`)
 
 | Skill | Déclencheur | Usage |

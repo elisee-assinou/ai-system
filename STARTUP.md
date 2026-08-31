@@ -17,6 +17,7 @@ Charge ce fichier EN PREMIER au début de chaque session.
 | FastAPI | `~/ai-system/rules/python-fastapi.md` |
 | NestJS | `~/ai-system/rules/nestJs.md` |
 | Frontend (Next.js) | `~/ai-system/rules/frontend.md` |
+| **Design (transversal UI)** | `~/ai-system/rules/design-frontend.md` — exigé pour tout code qui produit de l'UI |
 
 ## Workflows
 

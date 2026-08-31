@@ -8,7 +8,7 @@
 - TypeScript (strict mode)
 - Tailwind CSS
 - Architecture: DDD + Hexagonal + Event-driven
-- Rules: see rules/frontend.md
+- Rules: see rules/frontend.md (structure) + `rules/design-frontend.md` (visuel: responsivité, pixel-perfect, MCP design, accessibilité, zéro emoji — icônes uniquement)
 
 ### Backend — NestJS
 - NestJS
@@ -55,7 +55,7 @@
 - Hive — cache local
 - Architecture: DDD + Clean Architecture
 - Modules miroir du backend Django (auth, services, payments, chat, notifications)
-- Rules: see rules/flutter.md
+- Rules: see rules/flutter.md (structure) + `rules/design-frontend.md` (visuel: responsivité, pixel-perfect, Stitch/Figma, accessibilité, zéro emoji)
 
 ---
 
