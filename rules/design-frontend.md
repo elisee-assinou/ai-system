@@ -177,7 +177,70 @@ Ces règles s'appliquent à tout le code frontend/mobile. Elles ne sont pas opti
 
 ---
 
-## 7. Checklist finale avant de livrer un écran/composant
+## 7. Icônes — zéro emoji dans le code frontend
+
+### Règle absolue
+
+**Aucun emoji ne doit apparaître dans le code frontend** (ni dans les composants, ni dans les
+textes, ni dans les tooltips, ni dans les labels). Utiliser systématiquement des **icônes
+vectorielles** issues d'une lib d'icônes dédiée.
+
+### Pourquoi
+
+- Les emojis ne sont **pas fiables** : rendu variable selon OS/device, pas de controlleur
+  de taille/graisse/couleur, inaccessibles (pas d'aria-label natif), moche en production.
+- Une icône vectorielle = même rendu partout, tailable, colorable, accessible.
+
+### React / Next.js (Tailwind)
+
+- **Lucide React** (recommandé) : `<Icon className="w-5 h-5 text-primary" />`
+- Autres options valides : Heroicons (`@heroicons/react`), Phosphor Icons
+- **Jamais** `<span>🔥</span>` ou `🔥` dans du JSX
+- **Jamais** de string contenant un emoji rendue dans l'UI
+
+```tsx
+// ❌ Jamais
+<span>🔥 Populaire</span>
+<button>✅ Valider</button>
+
+// ✅ Toujours
+<Flame className="w-4 h-4 text-orange-500" />
+<CheckCircle className="w-5 h-5 text-green-500" />
+```
+
+### Flutter
+
+- **`flutter_svg`** avec des icônes SVG du design system OU
+- **`Icons`** de Material (`Icons.check_circle`, `Icons.flame`)
+- **Jamais** de `Text('🔥')` ou d'emoji dans un widget
+
+```dart
+// ❌ Jamais
+Text('🔥 Populaire')
+Icon(Icons.check)  // ✅ Material icon OK
+SvgPicture.asset('assets/icons/flame.svg')  // ✅ SVG custom OK
+```
+
+### Bibliothèques d'icônes recommandées
+
+| Stack | Lib | Usage |
+|-------|-----|-------|
+| React/Next.js | `lucide-react` | `<Icon className="..." />` |
+| React/Next.js | `@heroicons/react/24/outline` | `<HeroIcon className="..." />` |
+| React/Next.js | `@phosphor-icons/react` | `<PhIcon className="..." />` |
+| Flutter | `flutter_svg` (SVG custom) | `SvgPicture.asset(...)` |
+| Flutter | Material `Icons` | `Icon(Icons.xxx)` |
+| Flutter | Phosphor Icons Flutter | `PhosphorIcons.xxx` |
+
+### Règle de consistance
+
+- Un seul choix d'icônes par projet (ne pas mélanger Lucide + Heroicons + emoji)
+- Les icônes suivent les design tokens (couleur, taille) — pas de style custom
+- Les icônes décoratives ont `aria-hidden="true"`, les icônes fonctionnelles ont `aria-label`
+
+---
+
+## 8. Checklist finale avant de livrer un écran/composant
 
 L'agent DOIT vérifier (et reporter) :
 
@@ -187,6 +250,7 @@ L'agent DOIT vérifier (et reporter) :
 - [ ] Fidèle au design (spacing, typo, radius, ombres corrects)
 - [ ] Composants réutilisables extraits dans shared/ui (pas de duplication)
 - [ ] Accessible (contraste, labels, focus / sémantique)
+- [ ] Zéro emoji — toutes les icônes sont vectorielles (Lucide/Heroicons/Material/SVG)
 - [ ] Architecture respectée (pas de business logic dans l'UI — cf. règles d'archi)
 
 Toute valeur non-fournie par le design et devinée doit être **signalée**, pas masquée.
