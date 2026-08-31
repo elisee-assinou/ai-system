@@ -90,6 +90,7 @@ Lis et applique strictement ces fichiers de regles avant de generer du code :
 - ~/ai-system/STARTUP.md
 - ~/ai-system/architecture/context.md
 - ~/ai-system/rules/flutter.md
+- ~/ai-system/rules/design-frontend.md
 - ~/ai-system/rules/scribe-graphify.md (si .agent/ present)
 
 ## Regles absolues

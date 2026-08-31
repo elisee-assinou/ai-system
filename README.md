@@ -909,6 +909,7 @@ ai-system/
 │   ├── nestJs.md                         ~310 lignes — NestJS + TypeORM + CQRS
 │   ├── frontend.md                       ~290 lignes — Frontend DDD + Hexagonal
 │   ├── nextjs.md                         ~250 lignes — Next.js App Router spécifique
+│   ├── design-frontend.md                ~200 lignes — Responsivité, pixel-perfect, MCP design (Stitch/Figma), accessibilité
 │   ├── python-fastapi.md                 ~290 lignes — FastAPI + SQLAlchemy async
 │   ├── scribe-graphify.md                 ~85 lignes — Réflexes SCRIBE + Graphify
 │   └── tailwind-tokens.md                 ~70 lignes — Design tokens CSS → Tailwind

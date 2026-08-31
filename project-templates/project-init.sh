@@ -42,11 +42,12 @@ case "$STACK" in
     OPENCODE="$TEMPLATES/nextjs-nestjs-fastapi.json"
     ARCH_RULES="$RULES/frontend.md"
     ARCH_LABEL="DDD + Hexagonal + Event-driven"
-    EXTRA_RULES="$RULES/nextjs.md" ;;
+    EXTRA_RULES="$RULES/nextjs.md $RULES/design-frontend.md" ;;
   flutter)
     OPENCODE="$TEMPLATES/flutter.json"
     ARCH_RULES="$RULES/flutter.md"
     ARCH_LABEL="DDD + Clean Architecture"
+    EXTRA_RULES="$RULES/design-frontend.md"
     CLAUDE_TEMPLATE="$TEMPLATES/CLAUDE.flutter.md" ;;
   *)
     echo "❌ Stack inconnu: $STACK"
@@ -122,7 +123,10 @@ if [ "$STACK" = "flutter" ]; then
 elif [ ! -f "$DIR/CLAUDE.md" ]; then
   EXTRA_LINE=""
   if [ -n "$EXTRA_RULES" ]; then
-    EXTRA_LINE="- $EXTRA_RULES"
+    for R in $(printf '%s' "$EXTRA_RULES" | tr ' ' '\n'); do
+      EXTRA_LINE="${EXTRA_LINE}- $R
+"
+    done
   fi
 
   # Determine agent selon le type de stack

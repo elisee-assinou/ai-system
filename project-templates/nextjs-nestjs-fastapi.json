@@ -3,6 +3,7 @@
   "instructions": [
     "$HOME/ai-system/architecture/context.md",
     "$HOME/ai-system/rules/frontend.md",
+    "$HOME/ai-system/rules/design-frontend.md",
     "$HOME/ai-system/rules/nestJs.md",
     "$HOME/ai-system/rules/python-fastapi.md"
   ],
