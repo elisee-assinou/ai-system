@@ -1,0 +1,39 @@
+# Template frontend Next.js (standalone output) — durci
+# Requis dans next.config : output: "standalone"
+# Placeholders: {{APP_NAME}} {{PORT}}
+
+# ── Stage 1: deps ──────────────────────────────────────────────
+FROM node:22-alpine AS deps
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# ── Stage 2: build ─────────────────────────────────────────────
+FROM node:22-alpine AS build
+WORKDIR /app
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build
+
+# ── Stage 3: runtime ───────────────────────────────────────────
+FROM node:22-alpine AS runtime
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
+WORKDIR /app
+USER node
+
+COPY --from=build --chown=node:node /app/.next/standalone ./
+COPY --from=build --chown=node:node /app/.next/static ./.next/static
+COPY --from=build --chown=node:node /app/public ./public
+
+# jamais de secret dans l'image — NEXT_PUBLIC_* build-time uniquement
+ENV PORT={{PORT}} HOSTNAME=0.0.0.0
+EXPOSE {{PORT}}
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD wget -qO- "http://127.0.0.1:{{PORT}}/" >/dev/null || exit 1
+
+CMD ["node", "server.js"]

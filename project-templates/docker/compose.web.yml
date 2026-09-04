@@ -1,0 +1,35 @@
+# Template compose frontend Next.js (standalone) — durci
+# Secrets : .env (gitignore) ; NEXT_PUBLIC_* passe en ARG de build.
+# Placeholders: {{APP_NAME}} {{PORT}}
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    image: {{APP_NAME}}-web:local
+    restart: unless-stopped
+    ports:
+      - "{{PORT}}:{{PORT}}"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 256m
+    cpus: "0.5"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge

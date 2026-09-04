@@ -1,0 +1,33 @@
+# Template backend Python (FastAPI / Django) — durci
+# Placeholders: {{APP_NAME}} {{PORT}} {{ENTRY}} (ex: uvicorn app.main:app --host 0.0.0.0)
+
+# ── Stage 1: build deps ────────────────────────────────────────
+FROM python:3.12-slim AS build
+WORKDIR /app
+ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+COPY requirements.txt ./
+RUN python -m venv /opt/venv && /opt/venv/bin/pip install -r requirements.txt
+
+# ── Stage 2: runtime ───────────────────────────────────────────
+FROM python:3.12-slim AS runtime
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+# utilisateur non-root dedie
+RUN groupadd -r app && useradd -r -g app -d /app app
+WORKDIR /app
+USER app
+
+COPY --from=build /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# jamais de .env dans l'image — secrets via env runtime
+COPY --chown=app:app . .
+
+EXPOSE {{PORT}}
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:{{PORT}}/health', timeout=3).status==200 else 1)" || exit 1
+
+CMD {{ENTRY}}

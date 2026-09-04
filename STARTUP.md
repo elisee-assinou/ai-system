@@ -18,6 +18,7 @@ Charge ce fichier EN PREMIER au début de chaque session.
 | NestJS | `~/ai-system/rules/nestJs.md` |
 | Frontend (Next.js) | `~/ai-system/rules/frontend.md` |
 | **Design (transversal UI)** | `~/ai-system/rules/design-frontend.md` — exigé pour tout code qui produit de l'UI |
+| **Sécurité (transversal API + UI)** | `~/ai-system/rules/security.md` — exigé pour tout code qui expose une API ou produit une UI |
 
 ## Workflows
 
@@ -45,6 +46,7 @@ Charge ce fichier EN PREMIER au début de chaque session.
 | **core-3d-animation** | `~/ai-system/skills/core-3d-animation` | Three.js, R3F, BabylonJS, GSAP, Framer Motion |
 | **css-animation** | `~/ai-system/skills/css-animation` | Walkthroughs HTML/CSS pour démos et onboarding |
 | **cache-audit** | `~/ai-system/skills/cache-audit` | Audit setup Claude Code vs bonnes pratiques de caching |
+| **app-security** | `~/ai-system/skills/app-security` | Audit/hardening sécurité front + back (OWASP) |
 
 Skills gérés en externe (non trackés dans ai-system) :
 - `build-mcp-server`, `frontend-design`, `skill-creator` → plugins marketplace Claude Code

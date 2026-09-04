@@ -15,9 +15,10 @@ Infrastructure de développement assisté par IA basée sur Claude Code. Central
 7. [Workflow quotidien avec les agents](#workflow-quotidien-avec-les-agents)
 8. [Worktrees — développement parallèle](#worktrees--développement-parallèle)
 9. [SCRIBE + Graphify](#scribe--graphify)
-10. [Skills disponibles](#skills-disponibles)
-11. [Structure du repo](#structure-du-repo)
-12. [Maintenance](#maintenance)
+10. [Sécurité & Conteneurisation — usage par cas](#sécurité--conteneurisation--usage-par-cas)
+11. [Skills disponibles](#skills-disponibles)
+12. [Structure du repo](#structure-du-repo)
+13. [Maintenance](#maintenance)
 
 ---
 
@@ -48,6 +49,7 @@ ln -sf ~/ai-system/skills/animation-designer ~/.claude/skills/animation-designer
 ln -sf ~/ai-system/skills/core-3d-animation  ~/.claude/skills/core-3d-animation
 ln -sf ~/ai-system/skills/css-animation      ~/.claude/skills/css-animation
 ln -sf ~/ai-system/skills/cache-audit        ~/.claude/skills/cache-audit
+ln -sf ~/ai-system/skills/app-security       ~/.claude/skills/app-security
 ```
 
 ### Copier les agents Claude Code
@@ -96,6 +98,7 @@ claude
 - Lance `scribe bootstrap` (initialise la mémoire causale)
 - Génère `CLAUDE.md` à la racine (stack, archi, workflow agents)
 - Crée `.opencode/opencode.json` (si tu utilises opencode)
+- Génère `Dockerfile` + `docker-compose.yml` + `.dockerignore` **durcis** (multi-stage, non-root, HEALTHCHECK, secrets hors image) — sauf Flutter
 - Ajoute `.agent/ scribe-out/ graphify-out/ ai-docs/` au `.gitignore`
 
 **Ce que le script ne fait PAS :**
@@ -841,6 +844,90 @@ cp -r ~/agent-scribe-graphify/.agent ~/mon-projet/.agent
 
 ---
 
+## Sécurité & Conteneurisation — usage par cas
+
+Règle de référence : `~/ai-system/rules/security.md` (OWASP Top 10 / ASVS L2 / API Security Top 10).
+Skill associé : `app-security` (modes AUDIT / HARDEN / REVIEW).
+
+### Cas 1 — Nouveau projet : tout est automatique
+
+`project-init.sh` génère la couche sécurité + Docker durcie, et le `CLAUDE.md` impose `rules/security.md` aux agents :
+
+```bash
+source ~/ai-system/project-templates/project-init.sh <stack> mon-projet "Mon Projet"
+# → Dockerfile + docker-compose.yml + .dockerignore durcis (sauf Flutter)
+```
+
+| Stack | Dockerfile | Compose |
+|-------|-----------|---------|
+| `express` / `nestjs` | `Dockerfile.node` (multi-stage, non-root) | API + MongoDB + Redis |
+| `fastapi` / `django` | `Dockerfile.python` (multi-stage, non-root) | API + PostgreSQL + Redis |
+| `nextjs` / `fullstack` | `Dockerfile.nextjs` (standalone) | web seul |
+| `flutter` | — (mobile, pas de conteneur) | — |
+
+### Cas 2 — Projet existant non conteneurisé
+
+```bash
+# Générer les fichiers depuis les templates (adapter les placeholders)
+TPL=~/ai-system/project-templates/docker
+sed "s|{{APP_NAME}}|mon-api|g; s|{{PORT}}|8000|g; s|{{ENTRY}}|[\"uvicorn\", \"app.main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]|g" \
+  $TPL/Dockerfile.python > Dockerfile
+cp $TPL/compose.backend-python.yml docker-compose.yml   # puis remplacer {{APP_NAME}} {{PORT}}
+cp $TPL/.dockerignore .dockerignore
+```
+
+Puis demander à Claude : *"sécurise ce projet"* — le skill `app-security` passe en mode AUDIT.
+
+### Cas 3 — Audit sécurité d'un projet existant
+
+```
+/app-security              # ou : "audit sécurité", "security review"
+```
+
+Rapport scoré /100 avec findings `fichier:ligne` + fix, classées CRITIQUE → FAIBLE, par catégorie : Auth, Autorisation, Validation, CORS/Headers, Secrets, Frontend, **Conteneurisation**, Dépendances. Un projet sans `Dockerfile`/compose = finding ÉLEVÉ.
+
+### Cas 4 — Hardening pendant l'implémentation
+
+```
+"sécurise le module que tu implémentes"   # mode HARDEN
+```
+
+Chaque endpoint créé reçoit : auth guard + autorisation + schéma de validation + rate limit (si sensible). Chaque écran : règles XSS/tokens (§7-8). Chaque service : Dockerfile/compose conformes §10.
+
+### Cas 5 — Review sécurité avant commit/PR
+
+```
+"review sécurité"          # mode REVIEW → verdict SHIP / FIX
+```
+
+Jamais `SHIP` avec un point CRITIQUE ouvert (injection, secret exposé, auth bypass, CORS `*` + credentials).
+
+### Cas 6 — Lancer l'infra conteneurisée au quotidien
+
+```bash
+docker compose up -d --build   # tout démarre (API + DB + Redis)
+docker compose logs -f api
+docker compose down
+docker compose down -v         # + volumes (reset données)
+```
+
+Secrets : créer un `.env` local (gitignoré) — le compose le consomme via `env_file` / `${VARIABLE}`.
+
+### Cas 7 — Mise en production (checklist)
+
+- [ ] Ports DB/Redis dépubliés (réseau interne uniquement)
+- [ ] Secrets via `.env` / Docker secrets / secret manager — rien en clair dans le compose
+- [ ] `read_only`, `no-new-privileges`, `cap_drop: ALL`, limits mem/CPU actifs
+- [ ] Image taguée par commit/semver (pas `latest`), scan Trivy/Docker Scout bloquant
+- [ ] HTTPS + HSTS devant (reverse proxy), CORS whitelist de prod
+- [ ] Logs avec rotation, erreurs génériques, backups DB chiffrés
+
+### Cas 8 — Flutter
+
+Pas de conteneur, mais la sécurité s'applique : tokens en `flutter_secure_storage` (jamais SharedPreferences), pas de clé secrète côté mobile, pinning sur appels sensibles, pas de logs sensibles en release. Voir `rules/security.md` §8.
+
+---
+
 ## Repos
 
 | Repo | URL | Description |
@@ -856,6 +943,16 @@ cp -r ~/agent-scribe-graphify/.agent ~/mon-projet/.agent
 > code produisant de l'UI (React, Next.js, Flutter) — responsivité mobile-first, pixel-perfect,
 > MCP design (Stitch/Figma), design tokens, accessibilité, et **zéro emoji (icônes uniquement)**.
 > Elle est lue automatiquement par `frontend-ui-specialist` et `flutter-mobile-developer`.
+>
+> 🔒 **Règle transversale sécurité** : `~/ai-system/rules/security.md` s'applique à **tout**
+> code exposant une API ou produisant une UI — auth/authz, validation, CORS/headers, secrets,
+> XSS, stockage de tokens, **conteneurisation Docker durcie**. Référentiels : OWASP Top 10,
+> ASVS L2, API Security Top 10. Skill associé : `app-security` (audit/hardening/review).
+>
+> 🐳 **Conteneurisation** : tout backend/frontend est livré conteneurisé et durci
+> (multi-stage, non-root, HEALTHCHECK, secrets hors image, ports DB non publiés).
+> `project-init.sh` génère `Dockerfile` + `docker-compose.yml` + `.dockerignore`
+> depuis `project-templates/docker/`.
 
 ### Skills dans ce repo (versionné + symlinké dans `~/.claude/skills/`)
 
@@ -866,6 +963,7 @@ cp -r ~/agent-scribe-graphify/.agent ~/mon-projet/.agent
 | `core-3d-animation` | "3D", "three.js", "GSAP", "R3F" | Three.js, React Three Fiber, BabylonJS, GSAP |
 | `css-animation` | "css animation", "walkthrough demo" | Walkthroughs HTML/CSS pour démos et onboarding |
 | `cache-audit` | `/cache-audit` | Audit du setup Claude Code vs prompt caching |
+| `app-security` | `/app-security`, "audit sécurité" | Audit/hardening sécurité front + back (OWASP) |
 
 ### Skills externes (gérés automatiquement)
 

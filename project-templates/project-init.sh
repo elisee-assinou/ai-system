@@ -8,6 +8,7 @@
 # 2. Ajoute .agent/ scribe-out/ graphify-out/ ai-docs/ au .gitignore
 # 3. Lance le bootstrap SCRIBE
 # 4. Configure opencode.json (pour opencode)
+# 4b. Genere Dockerfile + docker-compose.yml + .dockerignore durcis (conteneurisation)
 # 5. Genere le CLAUDE.md avec les regles d'archi selon le stack
 
 set -e
@@ -101,7 +102,7 @@ fi
 
 # ── 3. Bootstrap SCRIBE ─────────────────────────────────────────────
 if [ -f "$DIR/.agent/workflow/scribe/scribe" ]; then
-  "$DIR/.agent/workflow/scribe/scribe" bootstrap 2>/dev/null || true
+  (cd "$DIR" && "$DIR/.agent/workflow/scribe/scribe" bootstrap 2>/dev/null || true)
   echo "✅ SCRIBE bootstrap done"
 else
   echo "⚠️  SCRIBE bootstrap skip (bundle absent)"
@@ -111,6 +112,47 @@ fi
 mkdir -p "$DIR/.opencode"
 cp "$OPENCODE" "$DIR/.opencode/opencode.json"
 echo "✅ opencode.json cree ($STACK)"
+
+# ── 4b. Docker (conteneurisation durcie) ─────────────────────────
+DOCKER_TPL="$TEMPLATES/docker"
+DOCKERFILE_SRC=""; DOCKER_ENTRY=""
+case "$STACK" in
+  express|express-mongo|nestjs|nest)
+    DOCKERFILE_SRC="Dockerfile.node"; DOCKER_PORT=3000
+    COMPOSE_SRC="compose.backend-node.yml" ;;
+  fastapi|python)
+    DOCKERFILE_SRC="Dockerfile.python"; DOCKER_PORT=8000
+    DOCKER_ENTRY='["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]'
+    COMPOSE_SRC="compose.backend-python.yml" ;;
+  django)
+    DOCKERFILE_SRC="Dockerfile.python"; DOCKER_PORT=8000
+    DOCKER_ENTRY='["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]'
+    COMPOSE_SRC="compose.backend-python.yml" ;;
+  fullstack|nextjs)
+    DOCKERFILE_SRC="Dockerfile.nextjs"; DOCKER_PORT=3000
+    COMPOSE_SRC="compose.web.yml" ;;
+esac
+
+if [ -n "$DOCKERFILE_SRC" ]; then
+  if [ ! -f "$DIR/Dockerfile" ]; then
+    sed "s|{{APP_NAME}}|$NAME|g; s|{{PORT}}|$DOCKER_PORT|g; s|{{ENTRY}}|$DOCKER_ENTRY|g" \
+      "$DOCKER_TPL/$DOCKERFILE_SRC" > "$DIR/Dockerfile"
+    echo "✅ Dockerfile cree ($DOCKERFILE_SRC, port $DOCKER_PORT)"
+  else
+    echo "⚠️  Dockerfile existe deja, ignore"
+  fi
+  if [ ! -f "$DIR/docker-compose.yml" ]; then
+    sed "s|{{APP_NAME}}|$NAME|g; s|{{PORT}}|$DOCKER_PORT|g" \
+      "$DOCKER_TPL/$COMPOSE_SRC" > "$DIR/docker-compose.yml"
+    echo "✅ docker-compose.yml cree ($COMPOSE_SRC)"
+  else
+    echo "⚠️  docker-compose.yml existe deja, ignore"
+  fi
+  if [ ! -f "$DIR/.dockerignore" ]; then
+    cp "$DOCKER_TPL/.dockerignore" "$DIR/.dockerignore"
+    echo "✅ .dockerignore cree"
+  fi
+fi
 
 # ── 5. CLAUDE.md ────────────────────────────────────────────────────
 if [ "$STACK" = "flutter" ]; then
@@ -222,18 +264,30 @@ TODO : Liste ici tous les modules/features du projet avec leur statut.
 ## Commandes
 
 \`\`\`bash
-npm run dev        # Demarrer en developpement
-npm run build      # Build production
-npm run test       # Lancer les tests
-npm run lint       # Linter
-npm run typecheck  # Verification TypeScript
+npm run dev                  # Demarrer en developpement
+npm run build                # Build production
+npm run test                 # Lancer les tests
+npm run lint                 # Linter
+npm run typecheck            # Verification TypeScript
+docker compose up -d --build # Lancer l'infra conteneurisee (tout tourne en conteneurs)
+docker compose down          # Arreter l'infra
 \`\`\`
+
+## Docker — OBLIGATOIRE
+
+Tout est conteneurise (regles : ~/ai-system/rules/security.md §10) :
+- Dockerfile multi-stage, runtime non-root, HEALTHCHECK — jamais de secrets dans l'image
+- Secrets via \`.env\` (\`env_file\`), jamais en clair dans le compose commité
+- Ports DB/Redis jamais publiés en prod (reseau interne uniquement)
+- En prod : \`read_only\`, \`no-new-privileges\`, \`cap_drop: ALL\`, limits mem/CPU
+- Scan d'image dans la CI (Trivy / Docker Scout)
 
 ## Architecture — OBLIGATOIRE
 
 Lis et applique strictement ces fichiers de regles avant de generer du code :
 - $ARCH/context.md (principes generaux)
 - $ARCH_RULES ($ARCH_LABEL)
+- $RULES/security.md (securite API + front — OBLIGATOIRE)
 $EXTRA_LINE
 - ~/ai-system/rules/scribe-graphify.md (si .agent/ present)
 
@@ -306,6 +360,7 @@ echo "  Bundle:     .agent/ $([ -d "$DIR/.agent" ] && echo '✅' || echo '❌')"
 echo "  SCRIBE:     scribe-out/ $([ -d "$DIR/scribe-out" ] && echo '✅' || echo '❌')"
 echo "  OpenCode:   .opencode/opencode.json ✅"
 echo "  CLAUDE.md:  $([ -f "$DIR/CLAUDE.md" ] && echo '✅' || echo '❌')"
+echo "  Docker:     $([ -f "$DIR/Dockerfile" ] && echo '✅' || echo '— (flutter)')"
 echo "  .gitignore: ✅"
 echo ""
 echo "Prochaine etape :"

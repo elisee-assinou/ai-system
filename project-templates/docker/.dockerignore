@@ -1,0 +1,34 @@
+# Secrets & env
+.env
+.env.*
+!.env.example
+
+# VCS
+.git
+.gitignore
+
+# Deps & build artifacts
+node_modules
+__pycache__
+*.pyc
+.venv
+dist
+.next
+build
+
+# Infrastructure agentique — jamais dans les images
+.agent/
+scribe-out/
+graphify-out/
+ai-docs/
+AGENT-MEMOIRE*.scribe
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# IDE & OS
+.idea
+.vscode
+.DS_Store

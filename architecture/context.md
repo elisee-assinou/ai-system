@@ -57,6 +57,12 @@
 - Modules miroir du backend Django (auth, services, payments, chat, notifications)
 - Rules: see rules/flutter.md (structure) + `rules/design-frontend.md` (visuel: responsivité, pixel-perfect, Stitch/Figma, accessibilité, zéro emoji)
 
+### Sécurité (transversal)
+- Rules: see `rules/security.md` — exigé pour tout code qui expose une API ou produit une UI
+- Référentiels : OWASP Top 10, ASVS L2, API Security Top 10
+- Skill d'audit/hardening : `app-security`
+- Conteneurisation : tout est livré durci — templates dans `project-templates/docker/`
+
 ---
 
 ## Core Principles (all layers)

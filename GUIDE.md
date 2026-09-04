@@ -54,6 +54,7 @@ source ~/ai-system/project-templates/project-init.sh nextjs mon-frontend "Mon Fr
 - `.agent/` — bundle SCRIBE + Graphify + TENOR
 - `.gitignore` — exclut `.agent/`, `scribe-out/`, `graphify-out/`, `ai-docs/`
 - `.opencode/opencode.json` — config opencode
+- `Dockerfile` + `docker-compose.yml` + `.dockerignore` — conteneurisation **durcie** (multi-stage, non-root, secrets hors image) — sauf Flutter
 
 ### Étape 3 — Personnaliser le CLAUDE.md
 
