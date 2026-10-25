@@ -25,6 +25,39 @@ tu enlèves plus que tu n'ajoutes, et tu ne livres jamais sans avoir **regardé*
 
 ---
 
+## BOÎTE À OUTILS — qui fait quoi
+
+| Outil | Rôle | Quand |
+|-------|------|-------|
+| `impeccable` (plugin) | Cadrage (`init`, `shape`), critique, audit, polish + hook détecteur | Tout projet UI |
+| `taste-skill` (design-taste-frontend) | Directions artistiques issues de 247 sites primés + inspecteur navigateur (`scripts/inspect.mjs`) | Landing / site vitrine / portfolio **éditorial** |
+| `ui-ux-pro-max` | Base de palettes, pairings de polices, checklist UX | DESIGN.md + revue finale |
+| `apple-design` (Emil Kowalski) | Langage Apple traduit pour le web : springs, gestes, matières, typo optique | Style Apple |
+| `emil-design-eng` | Philosophie de finition : détails invisibles, composants, décisions de motion | Polish de composants |
+| `find-animation-opportunities` → `animate` → `/review-animations` | Workflow motion d'Emil : trouver → implémenter → auditer | Après le layout, avant livraison |
+| 21st.dev MCP | Composants de base (hero, pricing, bento…) | Implémentation |
+| `motion-framer` | Framer Motion (implémentation) | Toute animation React |
+
+`review-animations` n'est invocable que par l'utilisateur (`/review-animations`) — le demander
+explicitement en fin de boucle.
+
+### Conflits entre outils — ordre de priorité
+
+1. **Le `DESIGN.md` gagne.** Chaque choix stylistique assumé (ex : titre en dégradé, eyebrow,
+   filets hairline, ombre sur le produit) y est noté avec sa raison.
+2. **Accessibilité et performance ne se négocient pas** : contraste AA, reduced-motion,
+   propriétés composite-only — un FAIL de ce type se corrige toujours.
+3. Les règles de goût des outils (taste-skill, impeccable) sont des **avertissements à défendre**,
+   pas des ordres. Le style Apple contredit volontairement certaines règles de taste-skill
+   (eyebrow, dégradés, hairlines, peu de photos) : on les garde si le DESIGN.md les assume.
+4. Les remarques sur le **sens** (titre qui ne dit pas ce qu'est le produit, vide non intentionnel)
+   sont presque toujours justes : les traiter.
+
+Pour l'inspecteur taste-skill : `CHROME_PATH` est défini dans `~/.claude/settings.json`
+(Chromium de Playwright) — `node <skill>/scripts/inspect.mjs <url|index.html>`.
+
+---
+
 ## PROCESS (obligatoire, dans l'ordre)
 
 ### 1. Direction artistique — AVANT tout code
@@ -76,6 +109,12 @@ Ordre de préférence :
    (stagger 60-100ms), entrée du visuel produit, parallax / `useScroll` léger, hover/tap sur les CTA
 3. `/impeccable animate` pour vérifier que chaque mouvement a un but (pas d'animation décorative)
 
+**Motion sur le reste de la page — workflow Emil Kowalski :**
+1. `find-animation-opportunities` — repère où animer (et où ne PAS animer), avec valeurs exactes
+2. `animate` — implémente (Framer Motion via `motion-framer` en React)
+3. `/review-animations` (à demander à l'utilisateur) — audit strict : timing < 300ms en UI,
+   propriétés GPU, reduced-motion, interruptibilité
+
 Tout composant importé est **ré-aligné sur les tokens du DESIGN.md** (couleurs, radius, typo).
 Jamais trois styles d'effets différents sur la même page.
 
@@ -91,7 +130,10 @@ Avec le skill `webapp-testing` (Playwright) :
    - `/impeccable audit` — a11y, perf, responsive
    - `/impeccable polish` — passe finale de finition
    - Si besoin : `bolder` (trop sage), `quieter` (trop chargé), `typeset`, `layout`
-6. Revue finale `ui-ux-pro-max` (checklist UX / accessibilité)
+6. Pages vitrines : `node <taste-skill>/scripts/inspect.mjs` — traiter les FAIL selon l'ordre
+   de priorité ci-dessus
+7. `/review-animations` si la page contient de la motion
+8. Revue finale `ui-ux-pro-max` (checklist UX / accessibilité)
 
 Le hook Impeccable signale aussi les défauts après chaque édition UI (gradient text, glow,
 contraste, dérive du design system). **Le brief gagne** : un effet assumé dans le `DESIGN.md`
@@ -117,7 +159,8 @@ S'inspirer du **langage**, jamais copier le site, le logo, les visuels ou les te
 |---------|-------|
 | Titres hero | 56-96px desktop / 40-48px mobile, `font-semibold`, `tracking-tight` (-0.02em à -0.04em), `leading-[1.05]` |
 | Police | SF Pro = licence plateformes Apple uniquement → **Inter Display**, **Geist**, ou **Manrope** |
-| Palette | Fond `#fbfbfd` / `#000`, texte `#1d1d1f` / `#f5f5f7`, muted `#6e6e73`, **un** accent (ex: bleu `#0071e3`) |
+| Palette | Fond `#fbfbfd` / `#000`, texte `#1d1d1f` / `#f5f5f7`, muted `#6e6e73`, **un** accent (ex: bleu `#0071e3`). Bouton plein texte blanc : `#0071e3` (≈4.6:1) — **pas** `#2997ff` (3:1, échoue AA), réservé aux liens sur fond noir |
+| Titre hero | Jamais le nom du produit seul : la ligne suivante dit ce que c'est, pour qui |
 | Rythme | Une idée par section, section plein écran, beaucoup de vide |
 | Images | Le produit / visuel porte la couleur — fond neutre autour |
 | Nav | Sticky, `backdrop-blur-xl bg-white/70 dark:bg-black/60`, hauteur 44-52px, bordure 1px très légère |

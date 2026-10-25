@@ -979,6 +979,8 @@ Pas de conteneur, mais la sécurité s'applique : tokens en `flutter_secure_stor
 | 12 example-skills (canvas, branding, doc, art...) | Anthropic marketplace | Automatique |
 | `nano-banana` (génération images Gemini) | buildatscale marketplace | Automatique |
 | `impeccable` (design : shape, critique, audit, polish… + hook détecteur) | Marketplace `pbakaus/impeccable` | Automatique (`/impeccable hooks off` pour couper le hook par projet) |
+| `taste-skill` (directions artistiques + inspecteur navigateur) | GitHub Leonxlnx/taste-skill → `~/.claude/external-skills/` | `git pull` dans `~/.claude/external-skills/taste-skill/` |
+| `emil-design-eng`, `apple-design`, `animate`, `find-animation-opportunities`, `review-animations` | GitHub emilkowalski/skills → `~/.claude/external-skills/` | `git pull` dans `~/.claude/external-skills/emil-skills/` |
 
 ### Ajouter un nouveau skill
 

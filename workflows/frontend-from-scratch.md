@@ -22,6 +22,8 @@ Charger le skill `premium-web-design`.
 2. Rassembler 3-5 références (Godly, Land-book, Mobbin, Refero, 21st.dev, sites produits)
 3. `/impeccable init` (PRODUCT.md) + `/impeccable shape` → cadrer produit, mode et direction
 4. `ui-ux-pro-max` → palette, pairing de polices, style selon le type de produit
+   Site vitrine éditorial : `taste-skill` (`scripts/draw.mjs`) pour tirer une direction issue de sites primés
+   Style Apple : `apple-design`
 5. Skill `frontend-design` → challenger les choix (anti-générique)
 6. Écrire `DESIGN.md` (ambiance, typo, palette, radius, densité, mouvement)
 7. Si plusieurs directions plausibles → proposer 2-3 options à l'utilisateur, il tranche
@@ -50,6 +52,7 @@ Alternative rapide : skill `theme-factory` pour un thème de départ.
 3. Autres sections premium via 21st.dev, ré-alignées sur les tokens
 4. Animations : `motion-framer` (reveals, micro-interactions), `gsap-scrolltrigger` (scroll storytelling),
    validées par `/impeccable animate`
+   Workflow motion : `find-animation-opportunities` → `animate` → `/review-animations`
 5. États systématiques : hover, focus visible, loading (skeleton), empty, error
 6. Contenu réaliste (pas de lorem ipsum) ; visuels via `nano-banana` / `canvas-design` si besoin
 
@@ -61,6 +64,8 @@ Skill `webapp-testing` (Playwright) :
 2. Lire les captures, appliquer la grille de critique du skill `premium-web-design`
 3. Corriger → recapturer — **2 à 3 itérations minimum**
 4. `/impeccable critique` → `/impeccable audit` → `/impeccable polish`
+   Pages vitrines : inspecteur `taste-skill` (`scripts/inspect.mjs`) — conflits arbitrés par le DESIGN.md
+   Motion : `/review-animations`
 5. Revue finale avec `ui-ux-pro-max` (accessibilité, contraste, UX)
 
 ## Phase 6 : Livraison
