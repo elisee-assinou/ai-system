@@ -116,9 +116,11 @@ fidèlement possible : mêmes espacements, tailles, couleurs, radius, typographi
 
 ### Si aucun design fourni
 
-- Poser une question à l'utilisateur si le choix visuel est structurant (thème, layout).
-- Sinon appliquer le design system du projet (tokens) + bonnes pratiques, en cohérence avec
-  les écrans existants.
+- Écrans existants avec un design system en place → l'appliquer (tokens), en cohérence.
+- Sinon (nouveau projet / nouvel écran sans maquette) → suivre
+  `workflows/frontend-from-scratch.md` avec le skill `premium-web-design` :
+  direction artistique (`DESIGN.md`) → maquettes Stitch → implémentation → critique par captures.
+- Poser une question à l'utilisateur si plusieurs directions visuelles sont plausibles.
 
 ---
 
@@ -257,7 +259,7 @@ Toute valeur non-fournie par le design et devinée doit être **signalée**, pas
 
 ---
 
-## 8. Interactions & animation (l'accent du design)
+## 9. Interactions & animation (l'accent du design)
 
 - Reproduire les états : hover, active, pressed, disabled, loading (skeleton), empty, error.
 - Animations si le design l'exige (Framer Motion / Flutter animations) — cf. skills
@@ -266,6 +268,29 @@ Toute valeur non-fournie par le design et devinée doit être **signalée**, pas
   le style.
 - Ajouter les états **empty / error / loading** même si le design ne les montre pas —
   c'est la qualité pro que le code doit garantir.
+
+---
+
+## 10. Direction artistique & anti-générique (sans maquette)
+
+S'applique quand aucun design n'est fourni. Détails : skill `premium-web-design`.
+
+### Exigé
+
+- Un `DESIGN.md` écrit AVANT le code (ambiance, références, typo, palette, radius, mouvement)
+- 3-5 références visuelles réelles identifiées
+- Typo : une police display + une police texte, scale stricte, contraste de taille marqué
+- Couleur : neutres cohérents + **un seul** accent + couleurs sémantiques
+- Espace : grille 4/8, sections aérées (≥ 96px desktop entre sections)
+- Tous les états (hover, focus, loading, empty, error)
+- Boucle de critique par captures (390 / 768 / 1440px) — 2-3 itérations minimum
+
+### Interdit sans justification
+
+- Police par défaut sans hiérarchie, dégradé violet → bleu, plusieurs accents
+- Ombres lourdes partout, grilles de 3 cards identiques comme seul pattern
+- Lorem ipsum, texte marketing creux, effets empilés (glass + glow + néon)
+- Copier un site existant (logo, visuels, textes) — s'inspirer du langage, pas cloner
 
 ---
 *Elisee ASSINOU*

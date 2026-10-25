@@ -28,6 +28,7 @@ Charge ce fichier EN PREMIER au début de chaque session.
 | Nouveau projet backend | `~/ai-system/workflows/new-backend-workflow.md` |
 | Reprise projet frontend | `~/ai-system/workflows/existing-frontend-workflow.md` |
 | Reprise projet backend | `~/ai-system/workflows/existing-backend-workflow.md` |
+| Frontend sans maquette (design from scratch) | `~/ai-system/workflows/frontend-from-scratch.md` |
 
 ## Prompts système
 
@@ -47,6 +48,7 @@ Charge ce fichier EN PREMIER au début de chaque session.
 | **css-animation** | `~/ai-system/skills/css-animation` | Walkthroughs HTML/CSS pour démos et onboarding |
 | **cache-audit** | `~/ai-system/skills/cache-audit` | Audit setup Claude Code vs bonnes pratiques de caching |
 | **app-security** | `~/ai-system/skills/app-security` | Audit/hardening sécurité front + back (OWASP) |
+| **premium-web-design** | `~/ai-system/skills/premium-web-design` | Design premium sans maquette (style Apple, 21st.dev, critique par captures) |
 
 Skills gérés en externe (non trackés dans ai-system) :
 - `build-mcp-server`, `frontend-design`, `skill-creator` → plugins marketplace Claude Code

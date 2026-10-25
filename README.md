@@ -50,6 +50,7 @@ ln -sf ~/ai-system/skills/core-3d-animation  ~/.claude/skills/core-3d-animation
 ln -sf ~/ai-system/skills/css-animation      ~/.claude/skills/css-animation
 ln -sf ~/ai-system/skills/cache-audit        ~/.claude/skills/cache-audit
 ln -sf ~/ai-system/skills/app-security       ~/.claude/skills/app-security
+ln -sf ~/ai-system/skills/premium-web-design ~/.claude/skills/premium-web-design
 ```
 
 ### Copier les agents Claude Code
@@ -964,6 +965,7 @@ Pas de conteneur, mais la sécurité s'applique : tokens en `flutter_secure_stor
 | `css-animation` | "css animation", "walkthrough demo" | Walkthroughs HTML/CSS pour démos et onboarding |
 | `cache-audit` | `/cache-audit` | Audit du setup Claude Code vs prompt caching |
 | `app-security` | `/app-security`, "audit sécurité" | Audit/hardening sécurité front + back (OWASP) |
+| `premium-web-design` | "style Apple", "design premium", "pas de maquette" | Direction artistique + 21st.dev + critique Playwright (workflow `frontend-from-scratch`) |
 
 ### Skills externes (gérés automatiquement)
 
@@ -1021,7 +1023,8 @@ ai-system/
 │   ├── new-backend-workflow.md           Phases 0→4 pour un nouveau backend
 │   ├── new-frontend-workflow.md          Phases 0→4 pour un nouveau frontend
 │   ├── existing-backend-workflow.md      Analyse + refactoring backend existant
-│   └── existing-frontend-workflow.md     Analyse + refactoring frontend existant
+│   ├── existing-frontend-workflow.md     Analyse + refactoring frontend existant
+│   └── frontend-from-scratch.md          Design premium sans maquette (DA → Stitch → critique)
 │
 ├── prompts/                           ← system prompts pour rôles spécifiques
 │   ├── system-architect.md               Rôle architecte logiciel
