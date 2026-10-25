@@ -20,9 +20,11 @@ Charger le skill `premium-web-design`.
 
 1. Identifier le type de produit et la cible (SaaS, vitrine, dashboard, e-commerce…)
 2. Rassembler 3-5 références (Godly, Land-book, Mobbin, Refero, 21st.dev, sites produits)
-3. Skill `frontend-design` → formuler l'ambiance et challenger les choix
-4. Écrire `DESIGN.md` (ambiance, typo, palette, radius, densité, mouvement)
-5. Si plusieurs directions plausibles → proposer 2-3 options à l'utilisateur, il tranche
+3. `/impeccable init` (PRODUCT.md) + `/impeccable shape` → cadrer produit, mode et direction
+4. `ui-ux-pro-max` → palette, pairing de polices, style selon le type de produit
+5. Skill `frontend-design` → challenger les choix (anti-générique)
+6. Écrire `DESIGN.md` (ambiance, typo, palette, radius, densité, mouvement)
+7. Si plusieurs directions plausibles → proposer 2-3 options à l'utilisateur, il tranche
 
 ## Phase 2 : Maquettes
 
@@ -43,10 +45,13 @@ Alternative rapide : skill `theme-factory` pour un thème de départ.
 ## Phase 4 : Implémentation
 
 1. Skill `pixel-perfect` sur chaque écran Stitch choisi
-2. Sections premium via MCP 21st.dev (inspiration → builder → refiner), ré-alignées sur les tokens
-3. Animations : `animation-designer` (micro-interactions), `gsap-scrolltrigger` (scroll storytelling)
-4. États systématiques : hover, focus visible, loading (skeleton), empty, error
-5. Contenu réaliste (pas de lorem ipsum) ; visuels via `nano-banana` / `canvas-design` si besoin
+2. **Hero** : composant 21st.dev (search → previews → `get_component`) adapté aux tokens,
+   puis animé avec **Framer Motion** (`motion-framer`)
+3. Autres sections premium via 21st.dev, ré-alignées sur les tokens
+4. Animations : `motion-framer` (reveals, micro-interactions), `gsap-scrolltrigger` (scroll storytelling),
+   validées par `/impeccable animate`
+5. États systématiques : hover, focus visible, loading (skeleton), empty, error
+6. Contenu réaliste (pas de lorem ipsum) ; visuels via `nano-banana` / `canvas-design` si besoin
 
 ## Phase 5 : Boucle de critique visuelle
 
@@ -55,7 +60,8 @@ Skill `webapp-testing` (Playwright) :
 1. Captures full page en 390px / 768px / 1440px, clair + sombre
 2. Lire les captures, appliquer la grille de critique du skill `premium-web-design`
 3. Corriger → recapturer — **2 à 3 itérations minimum**
-4. Revue finale avec `ui-ux-pro-max` (accessibilité, contraste, UX)
+4. `/impeccable critique` → `/impeccable audit` → `/impeccable polish`
+5. Revue finale avec `ui-ux-pro-max` (accessibilité, contraste, UX)
 
 ## Phase 6 : Livraison
 

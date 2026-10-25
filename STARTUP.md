@@ -52,6 +52,7 @@ Charge ce fichier EN PREMIER au début de chaque session.
 
 Skills gérés en externe (non trackés dans ai-system) :
 - `build-mcp-server`, `frontend-design`, `skill-creator` → plugins marketplace Claude Code
+- `impeccable` → plugin marketplace `pbakaus/impeccable` (design : `/impeccable shape|critique|audit|polish`)
 - `ui-ux-promax` → repo Git externe (`git pull` dans `~/.claude/skills/ui-ux-promax/`)
 - `figma-use` → plugin Cursor (symlink vers cache Cursor)
 

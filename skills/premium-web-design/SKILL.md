@@ -42,7 +42,13 @@ Densité : <aérée | standard | dense>
 Mouvement : <durées + easing — ex: 200ms cubic-bezier(0.22,1,0.36,1)>
 ```
 
-Charger le skill `frontend-design` pour challenger la direction (éviter le générique).
+Outils pour remplir le `DESIGN.md` :
+- `ui-ux-pro-max` — piocher palette, pairing de polices et style dans sa base (161 palettes,
+  57 pairings) selon le type de produit
+- `/impeccable init` (PRODUCT.md) puis `/impeccable shape` — cadrer le produit, le mode
+  (Persuade / Operate / Read / Experience) et la direction avant le code
+- `frontend-design` — challenger la direction (éviter le générique)
+
 Si le choix est structurant et ambigu → proposer 2-3 directions à l'utilisateur.
 
 ### 2. Maquette rapide (recommandé)
@@ -64,6 +70,12 @@ Ordre de préférence :
 3. **Magic UI / Aceternity UI** — effets ciblés (marquee, spotlight, border beam)
 4. Animations : skills `animation-designer`, `motion-framer`, `gsap-scrolltrigger`
 
+**Hero section — ordre imposé :**
+1. Base du hero = composant **21st.dev** (search → previews → `get_component`), adapté aux tokens
+2. Puis animation avec **Framer Motion** (skill `motion-framer`) : reveal en cascade
+   (stagger 60-100ms), entrée du visuel produit, parallax / `useScroll` léger, hover/tap sur les CTA
+3. `/impeccable animate` pour vérifier que chaque mouvement a un but (pas d'animation décorative)
+
 Tout composant importé est **ré-aligné sur les tokens du DESIGN.md** (couleurs, radius, typo).
 Jamais trois styles d'effets différents sur la même page.
 
@@ -74,6 +86,17 @@ Avec le skill `webapp-testing` (Playwright) :
 2. Regarder les captures (Read sur les PNG)
 3. Critiquer selon la grille ci-dessous, corriger
 4. Répéter **2 à 3 itérations minimum** avant de livrer
+5. Passes Impeccable avant livraison :
+   - `/impeccable critique` — revue UX avec scoring heuristique
+   - `/impeccable audit` — a11y, perf, responsive
+   - `/impeccable polish` — passe finale de finition
+   - Si besoin : `bolder` (trop sage), `quieter` (trop chargé), `typeset`, `layout`
+6. Revue finale `ui-ux-pro-max` (checklist UX / accessibilité)
+
+Le hook Impeccable signale aussi les défauts après chaque édition UI (gradient text, glow,
+contraste, dérive du design system). **Le brief gagne** : un effet assumé dans le `DESIGN.md`
+(ex : titre en dégradé style Apple) peut être conservé — le noter dans le DESIGN.md pour
+ne pas le re-signaler à chaque passe.
 
 Grille de critique :
 - Hiérarchie : l'œil sait-il où aller en < 1s ? Un seul élément dominant par section ?

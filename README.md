@@ -978,6 +978,7 @@ Pas de conteneur, mais la sécurité s'applique : tokens en `flutter_secure_stor
 | `skill-creator` | Marketplace Claude Code | Automatique |
 | 12 example-skills (canvas, branding, doc, art...) | Anthropic marketplace | Automatique |
 | `nano-banana` (génération images Gemini) | buildatscale marketplace | Automatique |
+| `impeccable` (design : shape, critique, audit, polish… + hook détecteur) | Marketplace `pbakaus/impeccable` | Automatique (`/impeccable hooks off` pour couper le hook par projet) |
 
 ### Ajouter un nouveau skill
 
