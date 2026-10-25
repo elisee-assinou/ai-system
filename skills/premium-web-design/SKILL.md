@@ -55,8 +55,12 @@ Si le choix est structurant et ambigu → proposer 2-3 directions à l'utilisate
 
 Ordre de préférence :
 1. **shadcn/ui** — base de composants (accessible, tokenisée)
-2. **21st.dev MCP** (`21st_magic_component_inspiration` / `_builder` / `_refiner`) —
-   composants communautaires haut de gamme (hero, pricing, bento, testimonials…)
+2. **21st.dev MCP** — composants communautaires haut de gamme (hero, pricing, bento, testimonials…) :
+   - `search` (gratuit, `type: "component"`) → métadonnées + `previewUrl`
+   - Télécharger et **regarder les previews** avant de choisir
+   - `get_component` (id) → code source. **Payant / quota** : vérifier `get_usage` d'abord
+     (free tier = 2 récupérations/jour, pas de génération IA) — ne récupérer que le composant retenu
+   - Adapter le code : tokens du DESIGN.md, contenu propre (jamais les textes/marques de la démo)
 3. **Magic UI / Aceternity UI** — effets ciblés (marquee, spotlight, border beam)
 4. Animations : skills `animation-designer`, `motion-framer`, `gsap-scrolltrigger`
 
