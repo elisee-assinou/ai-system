@@ -37,6 +37,7 @@ tu enlèves plus que tu n'ajoutes, et tu ne livres jamais sans avoir **regardé*
 | `find-animation-opportunities` → `animate` → `/review-animations` | Workflow motion d'Emil : trouver → implémenter → auditer | Après le layout, avant livraison |
 | 21st.dev MCP | Composants de base (hero, pricing, bento…) | Implémentation |
 | `motion-framer` | Framer Motion (implémentation) | Toute animation React |
+| `core-3d-animation:react-three-fiber` + `gsap-scrolltrigger` | 3D dans React + caméra pilotée par le scroll | Produit physique à montrer (piano, meuble, objet) |
 
 `review-animations` n'est invocable que par l'utilisateur (`/review-animations`) — le demander
 explicitement en fin de boucle.
@@ -151,7 +152,39 @@ Grille de critique :
 
 ---
 
-## LANGAGE VISUEL "STYLE APPLE"
+## 3D PRODUIT (React Three Fiber)
+
+Charger `core-3d-animation:react-three-fiber` et `core-3d-animation:gsap-scrolltrigger` AVANT d'écrire la scène.
+
+**Modèle** — ordre de préférence :
+1. Modèle fourni par le client (photogrammétrie, CAO)
+2. CC0 : Poly Haven, Smithsonian 3D (`3d.si.edu/cc0`)
+3. CC BY Sketchfab : le téléchargement demande un compte ; des miroirs GitHub publics existent —
+   `gh api search/code -f q='<objet> extension:gltf'`, puis **lire le `license.txt` d'origine**
+   (garder CC BY / CC0 ; refuser « Sketchfab Standard » et toute licence non redistribuable)
+4. Procédural en code (dernier recours : rendu nettement moins réaliste)
+
+Toujours : `npx @gltf-transform/cli optimize in.gltf out.glb --compress meshopt --texture-compress webp --texture-size 2048`
+(ex. 61 Mo → 7 Mo), crédit auteur + licence en pied de page.
+
+**Rendu** : HDRI de studio Poly Haven (CC0, 1k suffit) dans `<Environment files>`, un projecteur
+pour l'ombre, `ContactShadows`. Finitions = cloner le matériau de la caisse en `MeshPhysicalMaterial`
+(clearcoat pour la laque) en gardant normalMap/aoMap.
+
+**Scroll** : section épinglée (`position: sticky` dans un conteneur de N écrans), `ScrollTrigger`
+écrit la progression dans une ref (pas de `setState`) → caméra sur deux `CatmullRomCurve3`
+(positions + cibles) dans `useFrame`. Légendes synchronisées via une variable CSS `--p`.
+Reduced-motion : pas d'épinglage, vue fixe.
+
+**Pièges rencontrés** :
+- `scale(1,1,-1)` sur une géométrie inverse les faces (rendu noir) → utiliser une rotation
+- Une surface horizontale claire sous un HDRI fort sature en blanc → baisser `envMapIntensity`
+- Marge du premier enfant qui traverse le conteneur du hero → `display: flow-root`
+- Interaction sur un maillage d'un seul bloc (clavier) : mesurer la géométrie, puis
+  `worldToLocal(e.point)` → index de l'élément cliqué
+- Vérifier : rendu à plusieurs étapes du scroll + test d'interaction automatisé (Playwright)
+
+
 
 S'inspirer du **langage**, jamais copier le site, le logo, les visuels ou les textes d'Apple.
 

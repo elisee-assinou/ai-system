@@ -53,8 +53,11 @@ Alternative rapide : skill `theme-factory` pour un thème de départ.
 4. Animations : `motion-framer` (reveals, micro-interactions), `gsap-scrolltrigger` (scroll storytelling),
    validées par `/impeccable animate`
    Workflow motion : `find-animation-opportunities` → `animate` → `/review-animations`
-5. États systématiques : hover, focus visible, loading (skeleton), empty, error
-6. Contenu réaliste (pas de lorem ipsum) ; visuels via `nano-banana` / `canvas-design` si besoin
+5. Produit physique à montrer → 3D : skills `core-3d-animation:react-three-fiber` +
+   `core-3d-animation:gsap-scrolltrigger` (modèle, HDRI, caméra liée au scroll — voir
+   section « 3D PRODUIT » du skill `premium-web-design`)
+6. États systématiques : hover, focus visible, loading (skeleton), empty, error
+7. Contenu réaliste (pas de lorem ipsum) ; visuels via `nano-banana` / `canvas-design` si besoin
 
 ## Phase 5 : Boucle de critique visuelle
 
