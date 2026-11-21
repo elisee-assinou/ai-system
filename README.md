@@ -51,12 +51,15 @@ ln -sf ~/ai-system/skills/css-animation      ~/.claude/skills/css-animation
 ln -sf ~/ai-system/skills/cache-audit        ~/.claude/skills/cache-audit
 ln -sf ~/ai-system/skills/app-security       ~/.claude/skills/app-security
 ln -sf ~/ai-system/skills/premium-web-design ~/.claude/skills/premium-web-design
+for s in orchestrer-agents mobile-native-pass e2e-recette fluidite-perf chasse-decalage livrer-verifier; do ln -sfn ~/ai-system/skills/$s ~/.claude/skills/$s; done
 ```
 
 ### Copier les agents Claude Code
 
 ```bash
 cp ~/ai-system/.claude/agents/* ~/.claude/agents/
+# Agents versionnés dans ce repo (mobile-ux-designer, e2e-recette-runner, release-verifier) :
+for a in ~/ai-system/agents/*.md; do ln -sf "$a" ~/.claude/agents/; done
 ```
 
 ---
@@ -966,6 +969,12 @@ Pas de conteneur, mais la sécurité s'applique : tokens en `flutter_secure_stor
 | `cache-audit` | `/cache-audit` | Audit du setup Claude Code vs prompt caching |
 | `app-security` | `/app-security`, "audit sécurité" | Audit/hardening sécurité front + back (OWASP) |
 | `premium-web-design` | "style Apple", "design premium", "pas de maquette" | Direction artistique + 21st.dev + critique Playwright (workflow `frontend-from-scratch`) |
+| `orchestrer-agents` | "retours des testeurs", "fais tout", "lance des agents" | Découper en missions parallèles, brief commun (`prompts/brief-commun-template.md`), contrôle des agents, livraison (workflow `retours-utilisateurs`) |
+| `mobile-native-pass` | "pas joli sur mobile", "comme les grandes applis", "trop long sur mobile" | Mobile façon app native sans toucher au desktop pixel-perfect |
+| `e2e-recette` | "tu as tout testé ?", "recette", "le chat marche ?" | Recette Playwright multi-acteurs : temps réel, argent, sécurité, a11y, 375 + 1440 |
+| `fluidite-perf` | "c'est fluide ?", "ça rame" | Latence temps réel, FPS au défilement, tâches longues sur build prod CPU x4 |
+| `chasse-decalage` | "ça décale", "ça saute", "pas centré" | Mesurer un bug visuel vague, cause, correctif, preuve chiffrée en prod |
+| `livrer-verifier` | "déploie", "c'est en ligne ?" | Checks, commit FR, PR, fusion, attente du déploiement, preuve en prod |
 
 ### Skills externes (gérés automatiquement)
 
